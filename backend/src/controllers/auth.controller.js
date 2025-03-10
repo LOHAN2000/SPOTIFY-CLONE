@@ -10,7 +10,7 @@ export class AuthController {
       if (rows === 0) {
       const fullname = `${firstName || ''} ${lastName || ''}`.trim();
 
-      await conn.query('INSERT INTO users (clerkId, fullname, imageUrl) VALUES (?, ?, ?))', [id, fullname, imageUrl])
+      await conn.query('INSERT INTO users (clerkId, user_fullname, image_Url) VALUES (?, ?, ?))', [id, fullname, imageUrl])
       }
 
       res.status(200).json({ success: true})
