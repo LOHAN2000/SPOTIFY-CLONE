@@ -1,3 +1,5 @@
+import { conn } from "../config/db.js";
+
 export class AlbumController {
   static async getAllAlbums (req, res, next) {
     try {
@@ -21,7 +23,7 @@ export class AlbumController {
 
     } catch (error) {
       console.log('Error in getAllAlbums')
-      next();
+      next(error);
     }
   }
 
@@ -45,7 +47,7 @@ export class AlbumController {
 
     } catch (error) {
       console.log('Error in getAlbumById', error);
-      next();
+      next(error);
     }
   }
 }
