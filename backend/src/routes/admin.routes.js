@@ -6,6 +6,12 @@ import { requireAdmin } from '../middleware/auth.middleware.js';
 
 const router = express.Router()
 
-router.get('/songs', protectRoute, requireAdmin, AdminController.createSong)
+router.use(protectRoute, requireAdmin)
+
+router.post('/songs', AdminController.createSong)
+router.delete('/songs/:id', AdminController.deleteSong)
+
+router.post('/album/', AdminController.createAlbum)
+router.delete('/album/:id', AdminController.deleteSong)
 
 export default router;
