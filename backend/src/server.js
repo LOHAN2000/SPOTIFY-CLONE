@@ -10,6 +10,7 @@ import adminRoutes from './routes/admin.routes.js'
 import songsRoutes from './routes/song.routes.js'
 import albumRoutes from './routes/album.routes.js'
 import statsRoutes from './routes/stats.routes.js'
+import playlistRoutes from './routes/playlist.routes.js'
 import cors from 'cors'
 
 dotenv.config() 
@@ -36,12 +37,13 @@ app.use(fileUpload({
   }
 }))
 
-app.use('/api/users', userRoutes)
-app.use('/api/auth', authRoutes)
-app.use('/api/admin', adminRoutes)
-app.use('/api/songs', songsRoutes)
-app.use('/api/album', albumRoutes)
-app.use('/api/stats', statsRoutes)
+app.use('/api/users', userRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/songs', songsRoutes);
+app.use('/api/album', albumRoutes);
+app.use('/api/stats', statsRoutes);
+app.use('/api/playlist', playlistRoutes)
 
 app.use((err, req, res, next) => {
   res.status(500).json({ message: process.env.NODE_ENV === 'production' ? 'Internal server error' : err.message})
