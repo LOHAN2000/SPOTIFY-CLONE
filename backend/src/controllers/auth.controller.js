@@ -7,10 +7,9 @@ export class AuthController {
 
       const [rows] = await conn.query('SELECT * FROM users WHERE clerkId = ?', [id])
 
-      if (rows === 0) {
-      const fullname = `${firstName || ''} ${lastName || ''}`.trim();
-
-      await conn.query('INSERT INTO users (clerkId, user_fullname, image_Url) VALUES (?, ?, ?))', [id, fullname, imageUrl])
+      if (rows.length === 0) {
+        const fullname = `${firstName || ''} ${lastName || ''}`.trim();
+        await conn.query('INSERT INTO users (clerkId, user_fullname, image_Url) VALUES (?, ?, ?)', [id, fullname, imageUrl])
       }
 
       res.status(200).json({ success: true})
