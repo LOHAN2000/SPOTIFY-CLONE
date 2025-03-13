@@ -3,8 +3,8 @@ import { conn } from "../config/db.js";
 export class AlbumController {
   static async getAllAlbums (req, res, next) {
     try {
-      const [albums] = await conn.query('SELECT * FROM albums');
-      const [songs] = await conn.query('SELECT * FROM songs');
+      const [albums] = await conn.query('SELECT * FROM album');
+      const [songs] = await conn.query('SELECT * FROM song');
 
       const songsByAlbums = {};
 
@@ -16,13 +16,13 @@ export class AlbumController {
       });
 
       const albumWithSongs = albums.map((album) => (
-        {...album, songs: songsByAlbums[album_id] || []}
+        {...album, songs: songsByAlbums[album.album_id] || []}
       ));
 
       res.status(200).json(albumWithSongs)
 
     } catch (error) {
-      console.log('Error in getAllAlbums')
+      console.log('Error in getAllAlbums', error)
       next(error);
     }
   }

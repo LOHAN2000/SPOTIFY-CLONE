@@ -1,6 +1,5 @@
 # Node.js dependencies
 node_modules/
-
 # Logs
 logs/
 *.log
@@ -19,3 +18,5 @@ yarn-error.log*
 Thumbs.db
 
 api.http
+
+tmp/

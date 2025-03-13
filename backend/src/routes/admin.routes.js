@@ -12,6 +12,6 @@ router.post('/songs', AdminController.createSong)
 router.delete('/songs/:id', AdminController.deleteSong)
 
 router.post('/album/', AdminController.createAlbum)
-router.delete('/album/:id', AdminController.deleteSong)
+router.delete('/album/:id', AdminController.deleteAlbum)
 
 export default router;

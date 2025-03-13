@@ -24,18 +24,20 @@ app.use(cors({
   origin: 'http://localhost:3000',
   credentials: true
 }));
-app.use(express.json({ limit: "15mb" }));  
-app.use(express.urlencoded({ extended: true, limit: "15mb" }));
+app.use(express.json({ limit: "30mb" }));  
+app.use(express.urlencoded({ extended: true, limit: "30mb" }));
 
-app.use(clerkMiddleware()); 
 app.use(fileUpload({
   useTempFiles: true,
   tempFileDir: path.join(__dirname, 'tmp'),
   createParentPath: true,
   limits: {
-    fileSize: 10 * 1024 * 1024
-  }
-}))
+    fileSize: 30 * 1024 * 1024 // 30MB
+  },
+  abortOnLimit: true // Devuelve error si se excede el límite
+}));
+
+app.use(clerkMiddleware()); 
 
 app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);

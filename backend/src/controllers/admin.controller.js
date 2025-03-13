@@ -14,18 +14,20 @@ const uploadToCloudinary = async (file) => {
 }
 
 export class AdminController {
-  static async createSong (req, res) {
+  static async createSong (req, res, next) {
     try {
-      if (!req.files || !req.files.audioFile || !req.files.imageFile) {
-        return res.status(400).json({message: 'Please upload all files'})
-      }
-
+          
+    if (!req.files || !req.files.audioFile || !req.files.imageFile) {
+        return res.status(400).json({ message: 'Please upload all files' });
+     }
       const { title, artist, albumId, duration } = req.body;
       const audioFile = req.files.audioFile;
       const imageFile = req.files.imageFile
 
       const audioUrl = await uploadToCloudinary(audioFile)
       const imageUrl = await uploadToCloudinary(imageFile)
+
+      console.log(audioUrl, imageUrl)
 
       const [result] = await conn.query('INSERT IGNORE INTO song (title, artist, audio_Url, image_Url, duration, album_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)', [title, artist, audioUrl, imageUrl, duration, albumId || null])
 
@@ -68,6 +70,11 @@ export class AdminController {
     try {
       const { title, artist, releaseYear } = req.body;
       const { imageFile } = req.files;
+
+
+      if (!req.files || !req.files.imageFile) {
+        return res.status(400).json({ message: 'Please upload the image file' });
+      }
 
       const imageUrl = await uploadToCloudinary(imageFile);
 

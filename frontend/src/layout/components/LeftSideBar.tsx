@@ -1,12 +1,20 @@
 import { PlaylistSkeletons } from '@/components/skeletons/PlaylistSkeletons'
+import { useMusicStore } from '@/stores/useMusicStore'
 import { SignedIn } from '@clerk/clerk-react'
 import { ScrollArea } from '@radix-ui/react-scroll-area'
 import { House, Library, MessageCircle } from 'lucide-react'
+import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
 export const LeftSideBar = () => {
 
-  const isLoading: boolean = true; 
+  const { albums, isLoading, fetchAlbums } = useMusicStore()
+
+  useEffect(() => {
+    fetchAlbums();
+  }, [])
+
+  console.log(albums);
 
   return (
     <div className='h-full flex flex-col gap-y-2'>

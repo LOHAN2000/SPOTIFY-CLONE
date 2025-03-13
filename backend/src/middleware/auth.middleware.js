@@ -4,11 +4,11 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 export const protectRoute = async (req, res, next) => {
+
   if (!req.auth.userId) {
-    req.status(401).json({message: 'Unauthroized - You must be logged in'})
+    res.status(401).json({message: 'Unauthroized - You must be logged in'})
     return
   }
-
   next();
 }
 
