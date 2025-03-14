@@ -1,7 +1,11 @@
 @import "tailwindcss";
-
+@plugin "daisyui";
 /* Define la variante custom para dark mode usando :where */
 @custom-variant dark (&:where(.dark, .dark *));
+
+@plugin "daisyui" {
+  themes: black --default, dark --prefersdark;
+}
 
 /* Variables para el tema claro */
 :root {

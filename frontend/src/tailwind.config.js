@@ -13,4 +13,14 @@ export default {
     },
   },
   plugins: [require('tailwindcss-animate')],
+  daisyui: {
+    themes: [
+      'light',
+      {
+        black: {
+          ...daisyUIThemes['black']
+        }
+      }
+    ]
+  }
 }
