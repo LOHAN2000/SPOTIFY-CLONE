@@ -2,7 +2,7 @@ import { axiosInstance } from '@/lib/axios';
 import { Album, Song } from '@/types';
 import { create } from 'zustand';
 
-interface State {
+interface MusicState {
   albums: Album[],
   songs: Song[],
   isLoading: boolean,
@@ -11,7 +11,7 @@ interface State {
 }
 
 
-export const useMusicStore = create<State>((set) => ({
+export const useMusicStore = create<MusicState>((set) => ({ 
   
   albums: [],
   songs: [],

@@ -1,6 +1,7 @@
 import { PlaylistSkeletons } from '@/components/skeletons/PlaylistSkeletons'
 import { useMusicStore } from '@/stores/useMusicStore'
-import { SignedIn } from '@clerk/clerk-react'
+import { usePlaylistStore } from '@/stores/usePlaylistStore'
+import { SignedIn, useUser } from '@clerk/clerk-react'
 import { ScrollArea } from '@radix-ui/react-scroll-area'
 import { CirclePlus, FileUp, House, Library, MessageCircle, X } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
@@ -9,18 +10,21 @@ import { Link } from 'react-router-dom'
 export const LeftSideBar = () => {
 
   const { albums, isLoading, fetchAlbums } = useMusicStore()
-
-  const [ formPlaylist, setFormPlaylist ] = useState<{name: string, description: string}>({
+  const { playlists, isLoading: isLoadingPlaylist, error, fetchPlaylists } = usePlaylistStore()
+  const { isLoaded, user } = useUser();
+  const [ formPlaylist, setFormPlaylist ] = useState<{name: string, description: string, image_url: string}>({
     name: '',
-    description: ''
+    description: '',
+    image_url: ''
   })
   const [img, setImg] = useState<string>('')
   const imgRef = useRef<HTMLInputElement>(null)
 
-
   useEffect(() => {
-    fetchAlbums();
-  }, [])
+    fetchPlaylists(user.id);
+  }, [user])
+
+  console.log(playlists)
 
   const handleImageRef = (e: any):void => {
     const file = e.target.files[0];
@@ -31,9 +35,10 @@ export const LeftSideBar = () => {
     }
   }
 
-  const onSubmit = (e: any):void => {
+  const onSubmit = async (e: any):Promise<void> => {
     e.preventDefault();
-    console.log(formPlaylist)
+    await setFormPlaylist({...formPlaylist, image_url: img});
+    console.log(formPlaylist);
   }
 
   return (
@@ -71,7 +76,7 @@ export const LeftSideBar = () => {
               <form onSubmit={onSubmit} className='flex mt-2 flex-col overflow-hidden gap-y-5'>
                 <input ref={imgRef} type='file' onChange={handleImageRef} hidden/>
                 <input type='text' onChange={(e) => setFormPlaylist({ ...formPlaylist, [e.target.name]: e.target.value})} name='name' value={formPlaylist.name} className='py-2 border-b-2 focus:outline-none h-10 text-lg' placeholder='Title'/>
-                <textarea onChange={(e) => setFormPlaylist({ ...formPlaylist, [e.target.name]: e.target.value})} name='description'  value={formPlaylist.description} className='py-2 border-b-2 focus:outline-none max-h-40 resize-none overflow-y-auto h-24 text-lg' placeholder='Description'/>
+                <textarea onChange={(e) => setFormPlaylist({ ...formPlaylist, [e.target.name]: e.target.value})} name='description'  value={formPlaylist.description} className='py-2 border-b-2 focus:outline-none max-h-40 resize-none overflow-y-auto h-20 text-lg' placeholder='Description'/>
                 <div className='flex flex-col h-96 items-center justify-center border border-dashed rounded-md border-green-700 mt-5 relative'>
                   {!img ? (
                     <>
