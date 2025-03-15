@@ -1,16 +1,14 @@
+import { PlaylistItem } from '@/components/leftSideBar/Playlist'
 import { PlaylistSkeletons } from '@/components/skeletons/PlaylistSkeletons'
 import { useMusicStore } from '@/stores/useMusicStore'
 import { usePlaylistStore } from '@/stores/usePlaylistStore'
 import { SignedIn, useUser } from '@clerk/clerk-react'
-import { ScrollArea } from '@radix-ui/react-scroll-area'
 import { CirclePlus, FileUp, House, Library, MessageCircle, X } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { toast } from 'sonner'
 
 export const LeftSideBar = () => {
-
-  const {  user } = useUser();
   
   const [ formPlaylist, setFormPlaylist ] = useState<{name: string, description: string}>({
     name: '',
@@ -19,16 +17,16 @@ export const LeftSideBar = () => {
 
   const [img, setImg] = useState<string>('')
   const imgRef = useRef<HTMLInputElement>(null)
+  const { user } = useUser();
+  const userId = user?.id
 
   const { isLoading } = useMusicStore()
-  const { playlists, fetchPlaylists, postPlaylist, message } = usePlaylistStore()
+  const { playlists, fetchPlaylists, postPlaylist } = usePlaylistStore()
 
   useEffect(() => {
-    if (!user?.id) return;
-    fetchPlaylists(user.id);
-    console.log('hola')
-    
-  }, [])
+    if (!userId) return;
+    fetchPlaylists(userId)
+  }, [fetchPlaylists, userId])
 
   const handleImageRef = (e: React.ChangeEvent<HTMLInputElement>):void => {
     if (!e.target.files) return;
@@ -40,14 +38,21 @@ export const LeftSideBar = () => {
     }
   }
 
-  const onSubmit = async (e: any):Promise<void> => {
+  const onSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
-    postPlaylist(formPlaylist.name, formPlaylist.description, img)
-  }
+    try {
+      await postPlaylist(formPlaylist.name, formPlaylist.description, img);
+      toast.success('Playlist created');
+      setFormPlaylist({ name: '', description: '' });
+      setImg('');
+      const modal = document.getElementById('modal_createPlaylist') as HTMLDialogElement | null;
+      modal?.close();
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  };
 
-  if (message) {
-    toast.success('Playslist created')
-  }
+  console.log(playlists)
 
   return (
     <div className='h-full flex flex-col gap-y-2'>
@@ -61,18 +66,18 @@ export const LeftSideBar = () => {
           </Link>
         </SignedIn>
       </div>
-      <div className='flex flex-col h-screen rounded-lg bg-zinc-900/75 backdrop-blur-md px-3 py-5 gap-y-3'>
+      <div className='flex-1 flex flex-col h-40 rounded-lg bg-zinc-900/75 backdrop-blur-md px-3 py-5 gap-y-3'>
         <span className='flex flex-row items-center font-bold text-zinc-200 gap-x-3 px-3'><Library size={20}/><h1 className='hidden sm:block'>Playlist</h1></span>
-        <ScrollArea className='h-[calc(100vh-300px)]'>
-          <div className='space-y-2'>
-              <button onClick={() => {const modal = document.getElementById('modal_createPlaylist') as HTMLDialogElement | null; modal?.showModal();}} className='w-full flex hover:bg-zinc-950 rounded-lg py-3 px-3 gap-x-2 mt-2 cursor-pointer'><CirclePlus /><h1 className='flex items-start '>New Playlist</h1></button>
-            {isLoading ? (
-              <PlaylistSkeletons/>
-            ) : (
-              <h1>Some music</h1>
-            )}
-          </div>
-        </ScrollArea>
+        <button onClick={() => {const modal = document.getElementById('modal_createPlaylist') as HTMLDialogElement | null; modal?.showModal();}} className='w-full flex hover:bg-zinc-950 rounded-lg py-3 px-3 gap-x-2 mt-2 cursor-pointer'><CirclePlus /><h1 className='flex items-start '>New Playlist</h1></button>
+        <div className='flex-1 flex flex-col min-h-0 overflow-auto'>
+          {isLoading ? (
+            <PlaylistSkeletons/>
+          ) : (
+            playlists.map((pl, index) => (
+              <PlaylistItem playlist={pl} key={index}/>
+            ))
+          )}
+        </div>
       </div>
       <dialog id="modal_createPlaylist" className='modal'>
         <div className='modal-box p-4 pt-4 flex flex-col rounded-xl max-w-md  md:max-w-screen-sm bg-zinc-900/95'>

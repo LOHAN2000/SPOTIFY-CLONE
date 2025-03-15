@@ -25,6 +25,7 @@ export interface Playlist {
   name: string,
   description: string,
   playlist_id: number,
+  image_url: string,
   clerk_id: number,
   created_at: Date,
   updated_at: Date

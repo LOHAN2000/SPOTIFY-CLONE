@@ -19,29 +19,31 @@ export const usePlaylistStore = create<PlaylistState>((set) => ({
   error: null,
   
   fetchPlaylists: async (id) => {
-    set({isLoading: true, error:null})
+    set({ isLoading: true, error: null });
     try {
-      console.log('hola')
       const response = await axiosInstance.get(`/playlist/users/${id}`);
-      set({playlists: response.data})
+      set({ playlists: response.data });
     } catch (error: any) {
-      set({error: error.response.data.message})
+      set({ error: error.response.data.message });
     } finally {
-      set({isLoading:false})
+      set({ isLoading: false });
     }
   },
 
   postPlaylist: async (name: string, description: string, image_url: string) => {
-    set({isLoading: true, error: null})
-
+    set({ isLoading: true, error: null });
     try {
-      const response = await axiosInstance.post(`/playlist/create`, {name, description, image_url});
-      set((state) => ({ playlists: [...state.playlists, response.data.playlist], message: response.data.message}));  
+      const response = await axiosInstance.post(`/playlist/create`,{ name, description, image_url });
+      set((state) => ({
+        playlists: [...state.playlists, response.data.playlist],
+        message: response.data.message,
+      }));
+      return response.data;
     } catch (error: any) {
-      console.log(error)
-      set({error: error.response?.data?.message});
+      set({ error: error.response?.data?.message });
+      throw new Error(error.response?.data?.message || "Error al crear playlist");
     } finally {
-      set({isLoading: false})
+      set({ isLoading: false });
     }
-  }
+  },
 }))
