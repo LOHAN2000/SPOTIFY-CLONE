@@ -1,12 +1,24 @@
+import { v2 as cloudinary } from "cloudinary";
 import { conn } from "../config/db.js";
 
 export class PlaylistController {
   static async createPlaylist (req, res, next) {
     try {
-      const { name, description, image_url } = req.body;
+      const { name, description } = req.body;
       const currenUserId = req.auth.userId;
+      let { image_url } = req.body;
+      let img = '' 
 
-      const [result] = await conn.query('INSERT INTO playlist (clerkId, name, description, image_url, created_at, updated_at) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)', [currenUserId, name, description, image_url])
+      if (!name) {
+        return res.status(400).json({message: 'Please provide a playlist name'})
+      }
+
+      if (image_url) {
+        const uploadedImage = await cloudinary.uploader.upload(image_url);
+        img = await uploadedImage.secure_url;
+      }
+
+      const [result] = await conn.query('INSERT INTO playlist (clerkId, name, description, image_url, created_at, updated_at) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)', [currenUserId, name, description, img || null])
 
       if (result.affectedRows === 0) {
         return res.status(400).json({message: 'Error creating Playlist'})

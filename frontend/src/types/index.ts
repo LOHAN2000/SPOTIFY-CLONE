@@ -20,3 +20,18 @@ export interface Album {
   title: string,
   updated_at: Date
 }
+
+export interface Playlist {
+  name: string,
+  description: string,
+  playlist_id: number,
+  clerk_id: number,
+  created_at: Date,
+  updated_at: Date
+}
+
+export interface NewPlaylist {
+  name: string,
+  description: string,
+  image_url: string
+}

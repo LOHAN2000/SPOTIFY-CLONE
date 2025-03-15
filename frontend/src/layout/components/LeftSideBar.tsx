@@ -6,27 +6,32 @@ import { ScrollArea } from '@radix-ui/react-scroll-area'
 import { CirclePlus, FileUp, House, Library, MessageCircle, X } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { toast } from 'sonner'
 
 export const LeftSideBar = () => {
 
-  const { albums, isLoading, fetchAlbums } = useMusicStore()
-  const { playlists, isLoading: isLoadingPlaylist, error, fetchPlaylists } = usePlaylistStore()
-  const { isLoaded, user } = useUser();
-  const [ formPlaylist, setFormPlaylist ] = useState<{name: string, description: string, image_url: string}>({
+  const {  user } = useUser();
+  
+  const [ formPlaylist, setFormPlaylist ] = useState<{name: string, description: string}>({
     name: '',
     description: '',
-    image_url: ''
   })
+
   const [img, setImg] = useState<string>('')
   const imgRef = useRef<HTMLInputElement>(null)
 
+  const { isLoading } = useMusicStore()
+  const { playlists, fetchPlaylists, postPlaylist, message } = usePlaylistStore()
+
   useEffect(() => {
+    if (!user?.id) return;
     fetchPlaylists(user.id);
-  }, [user])
+    console.log('hola')
+    
+  }, [])
 
-  console.log(playlists)
-
-  const handleImageRef = (e: any):void => {
+  const handleImageRef = (e: React.ChangeEvent<HTMLInputElement>):void => {
+    if (!e.target.files) return;
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
@@ -37,8 +42,11 @@ export const LeftSideBar = () => {
 
   const onSubmit = async (e: any):Promise<void> => {
     e.preventDefault();
-    await setFormPlaylist({...formPlaylist, image_url: img});
-    console.log(formPlaylist);
+    postPlaylist(formPlaylist.name, formPlaylist.description, img)
+  }
+
+  if (message) {
+    toast.success('Playslist created')
   }
 
   return (
@@ -96,7 +104,7 @@ export const LeftSideBar = () => {
               <form method="dialog" className="">
                 <button className='py-1.5 px-5 rounded-md cursor-pointer hover:bg-zinc-500 text-sm'>Cancel</button>
               </form>
-              <button onClick={onSubmit} className='py-1.5 px-5 bg-green-600 rounded-md cursor-pointer hover:bg-green-700 text-sm'>Create</button>
+              <button type='submit' onClick={onSubmit} disabled={!formPlaylist.name} className='py-1.5 px-5 bg-green-600 rounded-md cursor-pointer hover:bg-green-700 text-sm disabled:bg-green-900 disabled:cursor-default'>Create</button>
             </div>
             </div>
           </div>

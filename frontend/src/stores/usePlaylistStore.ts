@@ -1,27 +1,47 @@
 import { axiosInstance } from "@/lib/axios";
+import { Playlist } from "@/types";
 import { create } from "zustand";
 
 interface PlaylistState {
-  playlists: any,
+  playlists: Playlist[],
   isLoading: boolean,
   error: string[] | Error | null,
-  fetchPlaylists: (id: string) => Promise<void>
+  message: Playlist[]
+  
+  fetchPlaylists: (id: string) => Promise<void>,
+  postPlaylist: (name: string, description: string, image_url: string) => Promise<void>
 }
 
 export const usePlaylistStore = create<PlaylistState>((set) => ({
   playlists: [],
+  message: [],
   isLoading: false,
   error: null,
   
   fetchPlaylists: async (id) => {
     set({isLoading: true, error:null})
     try {
-      const response = await axiosInstance.get(`/playlist/${id}`);
+      console.log('hola')
+      const response = await axiosInstance.get(`/playlist/users/${id}`);
       set({playlists: response.data})
     } catch (error: any) {
       set({error: error.response.data.message})
     } finally {
       set({isLoading:false})
+    }
+  },
+
+  postPlaylist: async (name: string, description: string, image_url: string) => {
+    set({isLoading: true, error: null})
+
+    try {
+      const response = await axiosInstance.post(`/playlist/create`, {name, description, image_url});
+      set((state) => ({ playlists: [...state.playlists, response.data.playlist], message: response.data.message}));  
+    } catch (error: any) {
+      console.log(error)
+      set({error: error.response?.data?.message});
+    } finally {
+      set({isLoading: false})
     }
   }
 }))
