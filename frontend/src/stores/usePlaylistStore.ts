@@ -3,35 +3,43 @@ import { Playlist } from "@/types";
 import { create } from "zustand";
 
 interface PlaylistState {
+  playlist: Playlist | null,
   playlists: Playlist[],
-  isLoading: boolean,
+  isLoadingFetch: boolean,
+  isLoadingPost: boolean,
+  isLoadingPlaylist: boolean,
   error: string[] | Error | null,
   message: Playlist[]
   
   fetchPlaylists: (id: string) => Promise<void>,
-  postPlaylist: (name: string, description: string, image_url: string) => Promise<void>
+  postPlaylist: (name: string, description: string, image_url: string) => Promise<void>,
+  fetchPlaylistById: (id: number) => Promise<void>
+
 }
 
 export const usePlaylistStore = create<PlaylistState>((set) => ({
+  playlist: null,
   playlists: [],
   message: [],
-  isLoading: false,
+  isLoadingFetch: false,
+  isLoadingPost: false,
+  isLoadingPlaylist: false,
   error: null,
   
   fetchPlaylists: async (id) => {
-    set({ isLoading: true, error: null });
+    set({ isLoadingFetch: true, error: null });
     try {
       const response = await axiosInstance.get(`/playlist/users/${id}`);
       set({ playlists: response.data });
     } catch (error: any) {
       set({ error: error.response.data.message });
     } finally {
-      set({ isLoading: false });
+      set({ isLoadingFetch: false });
     }
   },
 
-  postPlaylist: async (name: string, description: string, image_url: string) => {
-    set({ isLoading: true, error: null });
+  postPlaylist: async (name, description, image_url) => {
+    set({ isLoadingPost: true, error: null });
     try {
       const response = await axiosInstance.post(`/playlist/create`,{ name, description, image_url });
       set((state) => ({
@@ -43,7 +51,20 @@ export const usePlaylistStore = create<PlaylistState>((set) => ({
       set({ error: error.response?.data?.message });
       throw new Error(error.response?.data?.message || "Error al crear playlist");
     } finally {
-      set({ isLoading: false });
+      set({ isLoadingPost: false });
     }
   },
+
+  fetchPlaylistById: async (id) => {
+    set({isLoadingPlaylist: true, error:null})
+
+    try {
+      const response = await axiosInstance.get(`/playlist/${id}`)
+      set({ playlist: response.data})
+    } catch (error: any) {
+      set({error: error.response.data.message})
+    } finally {
+      set({isLoadingPlaylist: false})
+    }
+  } 
 }))

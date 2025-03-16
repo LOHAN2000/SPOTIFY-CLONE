@@ -1,9 +1,8 @@
 import { PlaylistItem } from '@/components/leftSideBar/Playlist'
 import { PlaylistSkeletons } from '@/components/skeletons/PlaylistSkeletons'
-import { useMusicStore } from '@/stores/useMusicStore'
 import { usePlaylistStore } from '@/stores/usePlaylistStore'
 import { SignedIn, useUser } from '@clerk/clerk-react'
-import { CirclePlus, FileUp, House, Library, MessageCircle, X } from 'lucide-react'
+import { CirclePlus, FileUp, House, Library, Loader2Icon, MessageCircle, X } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { toast } from 'sonner'
@@ -20,8 +19,7 @@ export const LeftSideBar = () => {
   const { user } = useUser();
   const userId = user?.id
 
-  const { isLoading } = useMusicStore()
-  const { playlists, fetchPlaylists, postPlaylist } = usePlaylistStore()
+  const { playlists, fetchPlaylists, postPlaylist, isLoadingFetch, isLoadingPost } = usePlaylistStore()
 
   useEffect(() => {
     if (!userId) return;
@@ -52,17 +50,15 @@ export const LeftSideBar = () => {
     }
   };
 
-  console.log(playlists)
-
   return (
     <div className='h-full flex flex-col gap-y-2'>
-      <div className='flex flex-col bg-zinc-900/75 backdrop-blur-md z-10 rounded-lg gap-y-7 px-6 py-5'>
+      <div className='flex flex-col bg-zinc-900/75 backdrop-blur-md z-10 rounded-lg px-3 py-5'>
         <Link to='/'>
-          <span className='flex flex-row items-center font-bold text-zinc-200 gap-x-3'><House size={20}/><h1 className='hidden sm:block'>Home</h1></span>
+          <span className='flex flex-row items-center font-bold text-zinc-200 gap-x-3 px-3 py-3 rounded-lg hover:bg-zinc-950'><House size={20}/><h1 className='hidden sm:block'>Home</h1></span>
         </Link>
         <SignedIn>
           <Link to='/chat'>
-            <span className='flex flex-row items-center font-bold text-zinc-200 gap-x-3'><MessageCircle size={20}/><h1 className='hidden sm:block'>Messages</h1></span>
+            <span className='flex flex-row items-center font-bold text-zinc-200 gap-x-3 px-3 py-3 rounded-lg hover:bg-zinc-950'><MessageCircle size={20}/><h1 className='hidden sm:block'>Messages</h1></span>
           </Link>
         </SignedIn>
       </div>
@@ -70,7 +66,7 @@ export const LeftSideBar = () => {
         <span className='flex flex-row items-center font-bold text-zinc-200 gap-x-3 px-3'><Library size={20}/><h1 className='hidden sm:block'>Playlist</h1></span>
         <button onClick={() => {const modal = document.getElementById('modal_createPlaylist') as HTMLDialogElement | null; modal?.showModal();}} className='w-full flex hover:bg-zinc-950 rounded-lg py-3 px-3 gap-x-2 mt-2 cursor-pointer'><CirclePlus /><h1 className='flex items-start '>New Playlist</h1></button>
         <div className='flex-1 flex flex-col min-h-0 overflow-auto'>
-          {isLoading ? (
+          {isLoadingFetch ? (
             <PlaylistSkeletons/>
           ) : (
             playlists.map((pl, index) => (
@@ -109,7 +105,7 @@ export const LeftSideBar = () => {
               <form method="dialog" className="">
                 <button className='py-1.5 px-5 rounded-md cursor-pointer hover:bg-zinc-500 text-sm'>Cancel</button>
               </form>
-              <button type='submit' onClick={onSubmit} disabled={!formPlaylist.name} className='py-1.5 px-5 bg-green-600 rounded-md cursor-pointer hover:bg-green-700 text-sm disabled:bg-green-900 disabled:cursor-default'>Create</button>
+              <button type='submit' onClick={onSubmit} disabled={!formPlaylist.name} className='py-1.5 px-5 bg-green-600 rounded-md cursor-pointer hover:bg-green-700 text-sm disabled:bg-green-900 disabled:cursor-default'>{isLoadingPost ? <Loader2Icon size={20} className='animate-spin '/> : 'Create'}</button>
             </div>
             </div>
           </div>

@@ -4,7 +4,7 @@ import { PlaylistController } from '../controllers/playlist.controller.js';
 
 const router = express.Router();
 
-router.get('/:id', protectRoute, PlaylistController.getPlaylistSongs);
+router.get('/:id', protectRoute, PlaylistController.getPlaylistWithSongs);
 router.get('/users/:id', protectRoute, PlaylistController.getUserPlaylists);
 router.post('/create', protectRoute, PlaylistController.createPlaylist);
 router.post('/song', protectRoute, PlaylistController.addSongToPlaylist);

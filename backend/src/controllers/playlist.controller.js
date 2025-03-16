@@ -82,19 +82,28 @@ export class PlaylistController {
     }
   }
 
-  static async getPlaylistSongs (req, res, next) {
+  static async getPlaylistWithSongs(req, res, next) {
     try {
       const { id } = req.params;
-
+  
+      const [playlist] = await conn.query(`
+        SELECT * FROM playlist WHERE playlist_id = ?
+      `, [id]);
+  
+      if (playlist.length === 0) {
+        return res.status(404).json({ message: 'Playlist not found' });
+      }
+  
       const [songs] = await conn.query(`
-        SELECT s.*
-        FROM song as s
-        JOIN playlist_songs as ps ON ps.song_id = s.song_id
-        WHERE ps.playlist_id = ?`, [id])
-      
-      res.status(200).json(songs)
+        SELECT s.* 
+        FROM song AS s
+        JOIN playlist_songs AS ps ON ps.song_id = s.song_id
+        WHERE ps.playlist_id = ?
+      `, [id]);
+  
+      res.status(200).json({ ...playlist[0], songs });
     } catch (error) {
-      console.log('Error in getPlaylistSongs', error);
+      console.log('Error in getPlaylistWithSongs', error);
       next(error);
     }
   }
