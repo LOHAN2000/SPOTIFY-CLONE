@@ -13,7 +13,7 @@ interface PlaylistState {
   
   fetchPlaylists: (id: string) => Promise<void>,
   postPlaylist: (name: string, description: string, image_url: string) => Promise<void>,
-  fetchPlaylistById: (id: number) => Promise<void>
+  fetchPlaylistById: (id: number | string) => Promise<void>
 
 }
 
