@@ -16,7 +16,7 @@ export interface Album {
   created_at: string,
   imageUrl: string,
   releaseYear: number,
-  songs: Song[],
+  song: Song[],
   title: string,
   updated_at: string
 }
@@ -36,4 +36,12 @@ export interface NewPlaylist {
   name: string,
   description: string,
   image_url: string
+}
+
+export interface User {
+  clerkId: string,
+  created_ad: string,
+  image_Url: string,
+  updated_at: string,
+  user_fullname: string
 }
