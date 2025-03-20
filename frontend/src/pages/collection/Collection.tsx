@@ -34,9 +34,9 @@ export const Collection = () => {
   return (
     <>
     {isPlaylistPage ? (
-      <div className="h-full">
-        <div className="relative min-h-full">
-          <div className="absolute inset-0 h-4/10 sm:h-2/10 md:h-3/12 lg:h-4/12 max-h-[550px] bg-cover bg-center filter blur-lg" style={{ backgroundImage: `url(${playlist?.image_url || "/spotify-black.jpg"})` }}>
+      <div className="h-full min-h-screen relative rounded-lg overflow-hidden">
+        <div className="relative min-h-full rounded-lg ">
+          <div className="absolute inset-0 h-4/10 sm:h-2/10 md:h-3/12 lg:h-4/12 max-h-[550px] bg-cover bg-center filter blur-lg" style={{ backgroundImage: `url(${playlist?.image_url || "/spotify-black.jpg"})`}}>
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/1 opacity-90"></div>
           </div>
           <div className="relative flex flex-col h-screen z-10 p-2 md:p-10 gap-y-3">

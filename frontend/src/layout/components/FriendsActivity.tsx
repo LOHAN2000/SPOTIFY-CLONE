@@ -42,7 +42,7 @@ export const FriendsActivity = () => {
       <div className='flex flex-col mt-5 px-4'>
         {users?.map((user) => (
           <div key={user.clerkId} className='flex items-start rounded-s-full rounded-e-2xl hover:bg-zinc-800/50 transition-colors cursor-pointer group gap-x-4'>
-            <div className='h-1/5 w-1/5 max-w-18'>
+            <div className='h-1/5 w-1/5 max-w-14'>
               <img src={user.image_Url} className='w-full object-contain rounded-full'/>
             </div>
             <div className='flex flex-col'>
