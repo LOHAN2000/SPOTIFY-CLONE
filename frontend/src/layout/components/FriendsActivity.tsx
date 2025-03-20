@@ -46,7 +46,7 @@ export const FriendsActivity = () => {
               <img src={user.image_Url} className='w-full object-contain rounded-full'/>
             </div>
             <div className='flex flex-col'>
-              <h1 className='font-bold'>{user.user_fullname}</h1>
+              <h1 className='font-bold text-sm'>{user.user_fullname}</h1>
               {isPlaying && (
                 <h1>music</h1>
               )}

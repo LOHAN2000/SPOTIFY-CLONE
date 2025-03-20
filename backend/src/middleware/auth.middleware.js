@@ -18,7 +18,7 @@ export const requireAdmin = async (req, res, next) => {
     const isAdmin = process.env.ADMIN_EMAIL === currenUser.primaryEmailAddress?.emailAddress;
 
     if (!isAdmin) {
-      res.status(403).json({ message: 'Unauthroized- You mus be an admin'})
+      return res.status(403).json({ message: 'Unauthroized- You mus be an admin'})
     }
 
     next();

@@ -1,11 +1,8 @@
 import { TopBar } from '@/components/TopBar'
-import React from 'react'
 
-type Props = {}
-
-export const HomePage = (props: Props) => {
+export const HomePage = () => {
   return (
-    <div>
+    <div className='rounded-lg overflow-hidden'>
       <TopBar/>
     </div>
   )
