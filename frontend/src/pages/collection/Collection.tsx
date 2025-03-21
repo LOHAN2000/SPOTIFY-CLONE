@@ -25,7 +25,7 @@ export const Collection = () => {
     if (!id) return;
     if (isPlaylistPage) fetchPlaylistById(id);
     if (isAlbumPage) fetchAlbumById(id);
-  }, [id])
+  }, [id, fetchAlbumById, fetchPlaylistById, pathname])
 
   console.log(playlist)
   console.log(album)
@@ -56,14 +56,14 @@ export const Collection = () => {
             </div> 
             <div>
               <button className="mt-15 borderr rounded-full bg-green-500 hover:bg-green-400 hover:scale-105 transition-all cursor-pointer p-6 "> 
-                <Play size={30} color="black"/>
+                <Play size={27} color="black"/>
               </button> 
             </div>
             <div className="flex flex-col mt-10 bg-black/40 backdrop:backdrop-blur-sm justify-center text-zinc-400 border-b border-white-/5 px-2">
               <div className="grid grid-cols-[15px_6fr_2fr_1fr] sm:grid-cols-[30px_5fr_2fr_1fr] text-sm md:text-xl">
                 <div>#</div>
                 <div>Title</div>
-                <div>Released Date</div>
+                <div>Date added</div>
                 <div><Clock/></div>
               </div>
             </div>
@@ -78,7 +78,6 @@ export const Collection = () => {
                     <div className="flex flex-col">
                       <div className="text-sm md:text-lg"><h1>{song.title}</h1></div>
                       <div className="text-sm md:text-lg"><h1>{song.artist}</h1></div>
-                      <div className="text-sm md:text-lg"><h1>{song.created_at.split('T')[0].split('-')[0]}</h1></div>
                     </div>
                   </div>
                   <div className="text-sm md:text-lg py-3 ps-3"><h1>{song.created_at.split('T')[0]}</h1></div>
@@ -138,7 +137,7 @@ export const Collection = () => {
                       <div className="text-sm md:text-lg"><h1>{song.artist}</h1></div>
                     </div>
                   </div>
-                  <div className="text-sm md:text-lg py-3 ps-3"><h1>{song.created_at.split('T')[0]}</h1></div>
+                  <div className="text-sm md:text-lg py-3 ps-3"><h1>{album.releaseYear}</h1></div>
                   <div className="text-sm md:text-lg py-3 ps-4"><h1>{formatDuration(song.duration)}</h1></div>
                 </div>
               ))}
