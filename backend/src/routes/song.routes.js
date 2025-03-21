@@ -8,8 +8,8 @@ const router = express.Router();
 
 router.get('/', protectRoute, requireAdmin, SongController.getAllSongs);
 router.get('/featured', SongController.getFeaturedSongs);
-router.get('made-for-you', SongController.getMadeForYou);
-router.get('trending', SongController.getTrendingSongs);
+router.get('/made-for-you', SongController.getMadeForYou);
+router.get('/trending', SongController.getTrendingSongs);
 
 
 export default router;
