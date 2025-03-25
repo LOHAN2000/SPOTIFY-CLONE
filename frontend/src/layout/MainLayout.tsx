@@ -2,6 +2,7 @@ import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/componen
 import { Outlet } from 'react-router-dom';
 import { LeftSideBar } from './components/LeftSideBar';
 import { FriendsActivity } from './components/FriendsActivity';
+import { AudioPlayer } from './components/AudioPlayer';
 
 export const MainLayout = () => {
 
@@ -25,6 +26,7 @@ export const MainLayout = () => {
           <FriendsActivity/>
         </ResizablePanel>
       </ResizablePanelGroup>
+      <AudioPlayer/>
     </div>
   )
 }
