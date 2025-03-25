@@ -75,6 +75,7 @@ export const LeftSideBar = () => {
           )}
         </div>
       </div>
+      {/* MODAL */}
       <dialog id="modal_createPlaylist" className='modal'>
         <div className='modal-box p-4 pt-4 flex flex-col rounded-xl max-w-md  md:max-w-screen-sm bg-zinc-900/95'>
           <form method="dialog">

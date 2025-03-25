@@ -27,9 +27,6 @@ export const Collection = () => {
     if (isAlbumPage) fetchAlbumById(id);
   }, [id, fetchAlbumById, fetchPlaylistById, pathname])
 
-  console.log(playlist)
-  console.log(album)
-  console.log(id)
 
   return (
     <>
