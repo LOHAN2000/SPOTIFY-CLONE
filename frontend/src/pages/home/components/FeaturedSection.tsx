@@ -6,8 +6,6 @@ export const FeaturedSection = () => {
 
   const { featuredSongs, error, isLoading } = useMusicStore();
 
-
-
   if (isLoading) {
     return( 
       <FeaturedGridSkeleton/>
