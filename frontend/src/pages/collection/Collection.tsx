@@ -1,4 +1,5 @@
 import { useMusicStore } from "@/stores/useMusicStore";
+import { usePlayerStore } from "@/stores/usePlayerStore";
 import { usePlaylistStore } from "@/stores/usePlaylistStore";
 import { Clock, Play } from "lucide-react";
 import { useEffect } from "react";
@@ -17,6 +18,9 @@ export const Collection = () => {
 
   const { fetchPlaylistById, playlist } = usePlaylistStore();
   const { fetchAlbumById, album} = useMusicStore();
+
+  const { currentSong, isPlaying, playAlbum, togglePlay } = usePlayerStore();
+
 
   const isAlbumPage = pathname.includes('/album');
   const isPlaylistPage = pathname.includes('/playlist');
@@ -39,7 +43,7 @@ export const Collection = () => {
           <div className="relative flex flex-col h-screen z-10 p-2 md:p-10 gap-y-3">
             <div className="flex flex-col sm:flex-row gap-6 w-full">
               <div className="w-30 sm:w-36 md:w-54 lg:w-90 max-w-3xl h-full min-w-8">
-                <img className="object-cover w-full h-full" src={playlist?.image_url || '/spotify-black.jpg'} alt="Playlist Cover" />
+                <img className="object-cover w-full h-full aspect-square" src={playlist?.image_url || '/spotify-black.jpg'} alt="Playlist Cover" />
               </div>
               <div className="flex flex-col gap-y-1 sm:gap-y-5 max-w-5/7 sm:max-w-full max-h-25 sm:max-h-74 overflow-y-scroll sm:justify-end">
                 <h1 className="text-sm sm:text-md lg:text-lg">{isAlbumPage ? 'Album' : 'Playlist'}</h1>
