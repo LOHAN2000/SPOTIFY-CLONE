@@ -47,7 +47,6 @@ export const AudioPlayer = () => {
       }
     } else {
       // Si es la misma canción, reiniciamos el tiempo y forzamos el play
-      audio.currentTime = 0;
       if (isPlaying) {
         audio.play();  // Se asegura que vuelva a reproducirse
       }

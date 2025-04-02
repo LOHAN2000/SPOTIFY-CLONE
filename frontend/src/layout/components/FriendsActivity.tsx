@@ -1,4 +1,5 @@
 import { useChatStore } from '@/stores/useChatStore'
+import { usePlayerStore } from '@/stores/usePlayerStore';
 import { useUser } from '@clerk/clerk-react';
 import { Headphones, Music, Users } from 'lucide-react';
 import { useEffect } from 'react'
@@ -7,6 +8,8 @@ export const FriendsActivity = () => {
 
   const { users, fetchUsers } = useChatStore();
   const { user } = useUser();
+  
+  const { currentSong } = usePlayerStore();
 
   useEffect(() => {
     if (!user) return;
@@ -39,26 +42,26 @@ export const FriendsActivity = () => {
           </div>
         </div>
       )}
-      <div className='flex flex-col mt-5 justify-center'>
-        {users?.map((user) => (
-          <div key={user.clerkId} className='flex items-start  hover:bg-zinc-800/50 transition-colors cursor-pointer group gap-x-4 p-3'>
-            <div className='flex w-1/5 max-w-14 min-w-8 my-auto'>
+      <div className='flex flex-col'>
+      {users?.map((user) => (
+          <div key={user.clerkId} className='grid grid-cols-[5fr_20fr_5fr] items-start  hover:bg-zinc-800/50 transition-colors cursor-pointer group gap-x-4 p-3'>
+            <div className='flex max-w-10  my-auto items-center justify-center mx-auto'>
               <img src={user.image_Url} className='w-full h-full object-contain rounded-full'/>
             </div>
-            <div className='flex flex-col justify-center'>
-              <h1 className='font-bold text-sm'>{user.user_fullname}</h1>
+            <div className='flex flex-col justify-center overflow-x-hidden'>
+              <h1 className='font-bold text-sm truncate'>{user.user_fullname}</h1>
               {isPlaying && (
-                <h1>music</h1>
+                <h1 className='text-sm truncate'>{currentSong?.title}</h1>
               )}
             </div>
             {isPlaying && (
               <div className='flex my-auto'>
-                <Music size={15} className='text-emerald-400 mt-1 '/>
-              </div>
-            )}
+                <Music className='text-emerald-400 mt-1 w-3/4 max-w-4'/>
+            </div>
+              )}
           </div>
         ))}
-      </div>
+        </div>
     </div>
   )
 }

@@ -1,7 +1,7 @@
 import { useMusicStore } from "@/stores/useMusicStore";
 import { usePlayerStore } from "@/stores/usePlayerStore";
 import { usePlaylistStore } from "@/stores/usePlaylistStore";
-import { Clock, Play } from "lucide-react";
+import { Clock, Music, Pause, Play } from "lucide-react";
 import { useEffect } from "react";
 import { useLocation, useParams } from "react-router-dom"
 
@@ -19,11 +19,30 @@ export const Collection = () => {
   const { fetchPlaylistById, playlist } = usePlaylistStore();
   const { fetchAlbumById, album} = useMusicStore();
 
-  const { currentSong, isPlaying, playAlbum, togglePlay } = usePlayerStore();
-
+  const { currentSong, isPlaying, playCollection, togglePlay } = usePlayerStore();
 
   const isAlbumPage = pathname.includes('/album');
   const isPlaylistPage = pathname.includes('/playlist');
+
+  const handlePlay = (index: number) => {
+    const songs = isAlbumPage ? album?.song : playlist?.songs;
+    if (songs) {
+      playCollection(songs, index)
+    }
+  }
+
+  const handleCollectionPlay = () => {
+    const collection = isAlbumPage ? album?.song : playlist?.songs;
+    const songs = isAlbumPage ? album?.song : playlist?.songs;
+    const isCurrentCollectionPlaying = collection?.some(song => song.song_id === currentSong?.song_id)
+
+    if (isCurrentCollectionPlaying) {
+      togglePlay();
+    } else {
+      if (!songs) return;
+      playCollection(songs, 0)
+    }
+  }
 
   useEffect(() => {
     if (!id) return;
@@ -56,8 +75,13 @@ export const Collection = () => {
               </div>
             </div> 
             <div>
-              <button className="mt-15 borderr rounded-full bg-green-500 hover:bg-green-400 hover:scale-105 transition-all cursor-pointer p-6 "> 
-                <Play size={27} color="black"/>
+              <button onClick={handleCollectionPlay} className="mt-15 borderr rounded-full bg-green-500 hover:bg-green-400 hover:scale-105 transition-all cursor-pointer p-6 "> 
+                {(isPlaying && playlist?.songs.some(song => song.song_id === currentSong?.song_id)) ? (
+                  <Pause size={27} color="black"/>
+                ) : (
+                  <Play size={27} color="black"/>
+                )}
+                  
               </button> 
             </div>
             <div className="flex flex-col mt-10 bg-black/40 backdrop:backdrop-blur-sm justify-center text-zinc-400 border-b border-white-/5 px-2">
@@ -69,22 +93,26 @@ export const Collection = () => {
               </div>
             </div>
             <div className="flex flex-col h-4/6 overflow-y-scroll">
-              {playlist?.songs.map((song, index) => (
-                <div className="grid grid-cols-[15px_6fr_2fr_1fr] sm:grid-cols-[30px_5fr_2fr_1fr] hover:bg-white/5 cursor-pointer text-zinc-400 px-2 py-1 rounded-sm group items-center" key={song.song_id}>
-                  <div className="text-sm md:text-lg py-3"><h1 className="group-hover:hidden">{index + 1}</h1><Play size={20} className="hidden group-hover:block"/></div>
-                  <div className="flex flex-row items-center gap-x-2">
-                    <div className="text-sm md:text-lg">
-                      <img src={song.image_Url} className="size-12 rounded-sm"/>
+              {playlist?.songs.map((song, index) => {
+
+                const isCurrentSong = currentSong?.song_id === song.song_id;
+                return(
+                  <div className="grid grid-cols-[15px_6fr_2fr_1fr] sm:grid-cols-[30px_5fr_2fr_1fr] hover:bg-white/5 cursor-pointer text-zinc-400 px-2 py-1 rounded-sm group items-center" key={song.song_id}>
+                    <div className="text-sm md:text-lg py-3"><h1 className="group-hover:hidden">{index + 1}</h1><Play size={20} onClick={() => handlePlay(index)} className="hidden group-hover:block cursor-pointer"/></div>
+                    <div className="flex flex-row items-center gap-x-2">
+                      <div className="text-sm md:text-lg">
+                        <img src={song.image_Url} className="size-12 rounded-sm"/>
+                      </div>
+                      <div className="flex flex-col">
+                        <div className="text-sm md:text-lg flex items-center gap-x-2"><h1>{song.title}</h1>{isCurrentSong ? <Music size={13} className="sm:mt-1.5 text-emerald-500"/> : ''}</div>
+                        <div className="text-sm md:text-lg"><h1>{song.artist}</h1></div>
+                      </div>
                     </div>
-                    <div className="flex flex-col">
-                      <div className="text-sm md:text-lg"><h1>{song.title}</h1></div>
-                      <div className="text-sm md:text-lg"><h1>{song.artist}</h1></div>
-                    </div>
+                    <div className="text-sm md:text-lg py-3 ps-3"><h1>{song.created_at.split('T')[0]}</h1></div>
+                    <div className="text-sm md:text-lg py-3 ps-4"><h1>{formatDuration(song.duration)}</h1></div>
                   </div>
-                  <div className="text-sm md:text-lg py-3 ps-3"><h1>{song.created_at.split('T')[0]}</h1></div>
-                  <div className="text-sm md:text-lg py-3 ps-4"><h1>{formatDuration(song.duration)}</h1></div>
-                </div>
-              ))}
+                )
+              })}
             </div>
           </div>
           <div>
@@ -113,8 +141,12 @@ export const Collection = () => {
               </div>
             </div> 
             <div>
-              <button className="mt-15 borderr rounded-full bg-green-500 hover:bg-green-400 hover:scale-105 transition-all cursor-pointer p-6 "> 
-                <Play size={30} color="black"/>
+              <button onClick={handleCollectionPlay} className="mt-15 borderr rounded-full bg-green-500 hover:bg-green-400 hover:scale-105 transition-all duration-500 cursor-pointer p-6 "> 
+                {(isPlaying && album?.song.some(song => song.song_id === currentSong?.song_id)) ? (
+                  <Pause size={27} color="black"/>
+                ) : (
+                  <Play size={27} color="black"/>
+                )}
               </button> 
             </div>
             <div className="flex flex-col mt-10 bg-black/40 backdrop:backdrop-blur-sm justify-center text-zinc-400 border-b border-white-/5 px-2">
@@ -126,22 +158,25 @@ export const Collection = () => {
               </div>
             </div>
             <div className="flex flex-col h-4/6 overflow-y-scroll">
-              {album?.song.map((song, index) => (
-                <div className="grid grid-cols-[15px_6fr_2fr_1fr] sm:grid-cols-[30px_5fr_2fr_1fr] hover:bg-white/5 cursor-pointer text-zinc-400 px-2 py-1 rounded-sm group items-center" key={song.song_id}>
-                  <div className="text-sm md:text-lg py-3"><h1 className="group-hover:hidden">{index + 1}</h1><Play size={20} className="hidden group-hover:block"/></div>
-                  <div className="flex flex-row items-center gap-x-2">
-                    <div className="text-sm md:text-lg">
-                      <img src={song.image_Url} className="size-12 rounded-sm"/>
-                    </div>
-                    <div className="flex flex-col">
-                      <div className="text-sm md:text-lg"><h1>{song.title}</h1></div>
+              {album?.song.map((song, index) => {
+                const isCurrentSong = currentSong?.song_id === song.song_id;
+                return(
+                  <div className="grid grid-cols-[15px_6fr_2fr_1fr] sm:grid-cols-[30px_5fr_2fr_1fr] hover:bg-white/5 cursor-pointer text-zinc-400 px-2 py-1 rounded-sm group items-center" key={song.song_id}>
+                    <div className="text-sm md:text-lg py-3"><h1 className="group-hover:hidden">{index + 1}</h1><Play size={20} onClick={() => handlePlay(index)} className="hidden group-hover:block cursor-pointer"/></div>
+                    <div className="flex flex-row items-center gap-x-2">
+                      <div className="text-sm md:text-lg">
+                        <img src={song.image_Url} className="size-12 rounded-sm"/>
+                      </div>
+                      <div className="flex flex-col">
+                      <div className="text-sm md:text-lg flex items-center gap-x-2"><h1>{song.title}</h1>{isCurrentSong ? <Music size={13} className="sm:mt-1.5 text-emerald-500"/> : ''}</div>
                       <div className="text-sm md:text-lg"><h1>{song.artist}</h1></div>
+                      </div>
                     </div>
+                    <div className="text-sm md:text-lg py-3 ps-3"><h1>{album.releaseYear}</h1></div>
+                    <div className="text-sm md:text-lg py-3 ps-4"><h1>{formatDuration(song.duration)}</h1></div>
                   </div>
-                  <div className="text-sm md:text-lg py-3 ps-3"><h1>{album.releaseYear}</h1></div>
-                  <div className="text-sm md:text-lg py-3 ps-4"><h1>{formatDuration(song.duration)}</h1></div>
-                </div>
-              ))}
+                )
+              })}
             </div>
           </div>
           <div>
