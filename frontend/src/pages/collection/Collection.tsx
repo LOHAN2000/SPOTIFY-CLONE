@@ -60,7 +60,7 @@ export const Collection = () => {
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/1 opacity-90"></div>
           </div>
           <div className="relative flex flex-col h-screen z-10 p-2 md:p-10 gap-y-3">
-            <div className="flex flex-col sm:flex-row gap-6 w-full">
+            <div className="flex flex-col sm:flex-row gap-10 w-full">
               <div className="w-30 sm:w-36 md:w-54 lg:w-90 max-w-3xl h-full min-w-8">
                 <img className="object-cover w-full h-full aspect-square" src={playlist?.image_url || '/spotify-black.jpg'} alt="Playlist Cover" />
               </div>
@@ -126,7 +126,7 @@ export const Collection = () => {
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/1 opacity-90"></div>
           </div>
           <div className="relative flex flex-col h-screen z-10 p-2 md:p-10 gap-y-3">
-            <div className="flex flex-col sm:flex-row gap-6 w-full">
+            <div className="flex flex-col sm:flex-row gap-10 w-full">
               <div className="w-30 sm:w-36 md:w-54 lg:w-90 max-w-3xl h-full min-w-8">
                 <img className="object-cover w-full h-full" src={album?.imageUrl || '/spotify-black.jpg'} alt="Playlist Cover" />
               </div>

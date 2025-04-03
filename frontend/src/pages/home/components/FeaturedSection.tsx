@@ -1,6 +1,6 @@
 import { FeaturedGridSkeleton } from "@/components/skeletons/FeaturedGridSkeleton";
 import { useMusicStore } from "@/stores/useMusicStore"
-import { Play } from "lucide-react";
+import { PlayButton } from "./PlayButton";
 
 export const FeaturedSection = () => {
 
@@ -31,7 +31,7 @@ export const FeaturedSection = () => {
             <h1 className="text-sm text-zinc-400 truncate">{song.artist}</h1>
           </div>
           <div className="absolute right-2 bottom-2 hidden group-hover:block transition-all">
-            <button className="bg-emerald-500 p-1.5 rounded-sm cursor-pointer"><Play size={20}/></button>
+            <PlayButton song={song}/>
           </div>
         </div>
       ))}
