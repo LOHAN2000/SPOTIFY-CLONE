@@ -3,13 +3,14 @@ import { Outlet } from 'react-router-dom';
 import { LeftSideBar } from './components/LeftSideBar';
 import { FriendsActivity } from './components/FriendsActivity';
 import { AudioPlayer } from './components/AudioPlayer';
+import { PlaybackControls } from './components/PlaybackControls';
 
 export const MainLayout = () => {
 
   const isMobile: boolean = false;
   return (
-    <div className='h-screen flex flex-col bg-black text-white '>
-      <ResizablePanelGroup direction='horizontal' className='flex-1 flex h-full overflow-hidden p-2'>
+    <div className='h-screen flex flex-col bg-black text-white p-2'>
+      <ResizablePanelGroup direction='horizontal' className='flex-1 flex h-full overflow-hidden '>
         <ResizablePanel defaultSize={15} minSize={isMobile ? 0 : 14}>
           <LeftSideBar/>
         </ResizablePanel>
@@ -26,6 +27,7 @@ export const MainLayout = () => {
           <FriendsActivity/>
         </ResizablePanel>
       </ResizablePanelGroup>
+      <PlaybackControls/>
       <AudioPlayer/>
     </div>
   )
