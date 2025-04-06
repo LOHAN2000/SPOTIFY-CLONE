@@ -17,7 +17,7 @@ export const HomePage = () => {
 
 
   return (
-    <main className='flex flex-col h-full bg-black rounded-lg overflow-hidden gap-y-3'>
+    <main className='flex flex-col h-full bg-[rgb(18,18,18)]/30 rounded-lg overflow-hidden gap-y-3'>
       <TopBar/>
       <div className='flex flex-col h-full overflow-y-auto gap-y-10 px-4'>
         <h1 className='font-bold text-4xl'>Good Afternoon</h1>

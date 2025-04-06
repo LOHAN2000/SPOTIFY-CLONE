@@ -37,7 +37,7 @@ export const AuthCallBackPage = () => {
 
   return (
     <div className="flex h-screen w-full bg-black items-center justify-center">
-      <Card className="w-[90%] max-w-md bg-zinc-900 border-zinc-800">
+      <Card className="w-[90%] max-w-md bg-zinc-900/30 border-zinc-800">
         <CardContent className="flex flex-col items-center gap-4">
           <Loader className="size-5 text-green-500 animate-spin"/>
           <h3 className="text-zinc-300 text-md font-bold">Logging you in</h3>

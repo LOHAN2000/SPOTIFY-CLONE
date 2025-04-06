@@ -55,12 +55,12 @@ export const Collection = () => {
     <>
     {isPlaylistPage ? (
       <div className="h-full">
-      <div className="relative min-h-full">
+      <div className="relative h-full">
         <div className="absolute inset-0 h-4/10 sm:h-2/10 md:h-3/12 lg:h-4/12 max-h-[550px] bg-cover bg-center filter blur-lg" style={{ backgroundImage: `url(${playlist?.image_url || "/spotify-black.jpg"})` }}>
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/1 opacity-90"></div>
         </div>
-        <div className="relative flex flex-col h-screen z-10 p-2 md:p-10 gap-y-0 sm:gap-y-3">
-          <div className="flex flex-col sm:flex-row gap-x-14 w-full sm:h-2/8">
+        <div className="relative flex flex-col h-full z-10 p-2 md:p-10 gap-y-0 sm:gap-y-3 bg-[rgb(18,18,18)]/30">
+          <div className="flex flex-col sm:grid sm:grid-cols-[1fr_8fr] gap-x-14 w-full sm:h-2/8">
             <div className="flex sm:flex-1/10 w-50 sm:w-36 md:w-54 lg:w-40 max-w-3xl h-full min-w-8 mx-auto sm:mx-0 aspect-square">
               <img className="object-center object-cover w-full h-full rounded-lg aspect-square" src={playlist?.image_url || '/spotify-black.jpg'} alt="Playlist Cover" />
             </div>
@@ -82,7 +82,7 @@ export const Collection = () => {
             )}
           </button> 
           </div>
-          <div className="flex flex-col mt-5 sm:mt-10 bg-black/40 backdrop:backdrop-blur-sm justify-center text-zinc-400 border-b border-white-/5 px-2">
+          <div className="flex flex-col mt-5 sm:mt-10  justify-center text-zinc-400 border-b border-white-/5 px-2">
             <div className="grid grid-cols-[15px_6fr_2fr_1fr] sm:grid-cols-[30px_5fr_2fr_1fr] text-sm md:text-xl">
               <div>#</div>
               <div>Title</div>
@@ -90,7 +90,7 @@ export const Collection = () => {
               <div><Clock/></div>
             </div>
           </div>
-          <div className="flex flex-col h-4/6 overflow-y-scroll">
+          <div className="flex flex-col h-full overflow-y-scroll">
             {playlist?.songs.map((song, index) => {
               const isCurrentSong = currentSong?.song_id === song.song_id;
               return(
@@ -118,12 +118,12 @@ export const Collection = () => {
     </div>
     ) : (
       <div className="h-full">
-        <div className="relative min-h-full">
+        <div className="relative h-full">
           <div className="absolute inset-0 h-4/10 sm:h-2/10 md:h-3/12 lg:h-4/12 max-h-[550px] bg-cover bg-center filter blur-lg" style={{ backgroundImage: `url(${album?.imageUrl || "/spotify-black.jpg"})` }}>
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/1 opacity-90"></div>
           </div>
-          <div className="relative flex flex-col h-screen z-10 p-2 md:p-10 gap-y-0 sm:gap-y-3 ">
-            <div className="flex flex-col sm:flex-row gap-x-14 w-full sm:h-2/8">
+          <div className="relative flex flex-col h-full z-10 p-2 md:p-10 gap-y-0 sm:gap-y-3 bg-[rgb(18,18,18)]/30">
+            <div className="flex flex-col sm:grid sm:grid-cols-[1fr_8fr] gap-x-14 w-full sm:h-2/8">
               <div className="flex sm:flex-1/10 w-50 sm:w-36 md:w-54 lg:w-40 max-w-3xl h-full min-w-8 mx-auto sm:mx-0 aspect-square">
                 <img className="object-center object-cover w-full h-full rounded-lg aspect-square" src={album?.imageUrl || '/spotify-black.jpg'} alt="Playlist Cover" />
               </div>

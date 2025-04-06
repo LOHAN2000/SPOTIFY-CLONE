@@ -52,7 +52,7 @@ export const LeftSideBar = () => {
 
   return (
     <div className='h-full flex flex-col gap-y-2'>
-      <div className='flex flex-col bg-zinc-900/75 backdrop-blur-md z-10 rounded-lg px-3 py-5'>
+      <div className='flex flex-col bg-[rgb(18,18,18)]/30 backdrop-blur-md z-10 rounded-lg px-3 py-5'>
         <Link to='/'>
           <span className='flex flex-row items-center font-bold text-zinc-200 gap-x-3 px-3 py-3 rounded-lg hover:bg-zinc-950'><House size={20}/><h1 className='hidden sm:block'>Home</h1></span>
         </Link>
@@ -62,7 +62,7 @@ export const LeftSideBar = () => {
           </Link>
         </SignedIn>
       </div>
-      <div className='flex-1 flex flex-col h-40 rounded-lg bg-zinc-900/75 backdrop-blur-md px-3 py-5 gap-y-3'>
+      <div className='flex-1 flex flex-col h-40 rounded-lg bg-[rgb(18,18,18)]/30 backdrop-blur-md px-3 py-5 gap-y-3'>
         <span className='flex flex-row items-center font-bold text-zinc-200 gap-x-3 px-3'><Library size={20}/><h1 className='hidden sm:block'>Playlist</h1></span>
         <button onClick={() => {const modal = document.getElementById('modal_createPlaylist') as HTMLDialogElement | null; modal?.showModal();}} className='w-full flex hover:bg-zinc-950 rounded-lg py-3 px-3 gap-x-2 mt-2 cursor-pointer'><CirclePlus /><h1 className='flex items-start '>New Playlist</h1></button>
         <div className='flex-1 flex flex-col min-h-0 overflow-auto'>
@@ -77,7 +77,7 @@ export const LeftSideBar = () => {
       </div>
       {/* MODAL */}
       <dialog id="modal_createPlaylist" className='modal'>
-        <div className='modal-box p-4 pt-4 flex flex-col rounded-xl max-w-md  md:max-w-screen-sm bg-zinc-900/95'>
+        <div className='modal-box p-4 pt-4 flex flex-col rounded-xl max-w-md  md:max-w-screen-sm bg-[rgb(18,18,18)]'>
           <form method="dialog">
           </form>
           <div>

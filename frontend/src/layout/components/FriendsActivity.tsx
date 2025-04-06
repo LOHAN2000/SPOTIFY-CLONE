@@ -19,7 +19,7 @@ export const FriendsActivity = () => {
   const isPlaying = true
 
   return (
-    <div className='h-full bg-zinc-900 rounded-lg flex flex-col '>
+    <div className='h-full bg-[rgb(18,18,18)]/30 rounded-lg flex flex-col '>
       <div className='flex gap-x-2 p-4 items-center border-b border-zinc-800'>
         <Users/>
         <h1 className='font-bold hidden text-sm md:text-md sm:block'>What they're listening to</h1>

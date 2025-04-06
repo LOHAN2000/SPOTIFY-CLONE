@@ -9,7 +9,7 @@ export const TopBar = () => {
   const { isAdmin } = useAuthStore();
   
   return (
-    <div className='flex flex-row sticky top-0 bg-zinc-900/75 backdrop-blur-md z-10 w-full justify-between items-center py-3 px-4'>
+    <div className='flex flex-row sticky top-0 bg-zinc-900/30 backdrop-blur-md z-10 w-full justify-between items-center py-3 px-4'>
       <Link to='/'>
         <div className='flex flex-row items-center gap-x-2'>
           <div className='w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 lg:w-8 lg:h-8'>

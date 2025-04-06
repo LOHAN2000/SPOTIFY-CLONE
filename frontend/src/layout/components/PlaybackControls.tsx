@@ -1,4 +1,7 @@
+import { Slider } from "@/components/ui/slider";
+import { cn } from "@/lib/utils";
 import { usePlayerStore } from "@/stores/usePlayerStore"
+import { Play, Repeat, Shuffle, SkipBack, SkipForwardIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 export const PlaybackControls = () => {
@@ -41,19 +44,29 @@ export const PlaybackControls = () => {
   }
 
   return (
-    <footer className="h-14 sm:h-18 bg-zinc-900/75 border-t border-zinc-800 px-4 rounded-lg mt-2">
-      <div className="grid grid-cols-3 items-center h-full maw-w-[1800px] mx-auto overflow-hidden">
-        <div className="grid grid-cols-[1fr_3fr] max-w-60">
-          <div className="flex h-full w-full">
-            <img src={currentSong?.image_Url} className="object-center object-cover"/>
+    <footer className="h-14 sm:h-18 bg-black px-4 rounded-lg mt-2">
+      <div className="grid grid-cols-3 items-center h-full max-w-[2200px] mx-auto overflow-hidden">
+        <div className="grid grid-cols-[1fr_8fr] gap-x-3 overflow-hidden h-full">
+          <div className="flex h-10 w-10 sm:h-15 sm:w-15 mx-auto aspect-square my-auto">
+            {currentSong?.image_Url && (
+              <img src={currentSong?.image_Url} className="object-center object-cover w-full h-full aspect-square rounded-md"/>
+            )}
           </div>
           <div className="flex flex-col justify-center">
-            <h1>{currentSong?.title}</h1>
-            <h1>{currentSong?.artist}</h1>
+            <h1 className="text-md font-light">{currentSong?.title}</h1>
+            <h1 className="text-xs text-zinc-400">{currentSong?.artist}</h1>
           </div>
         </div>
-        <div className="flex justify-center">
-          reproductor
+        <div className="flex flex-col items-center justify-center max-w-full gap-2">
+          <div className="flex flex-row gap-x-9 items-center">
+            <Shuffle className="size-4"/>
+            <SkipBack className="size-4"/>
+            <button className="bg-white p-2 rounded-full"><Play className="size-4 text-black"/></button>
+            <SkipForwardIcon className="size-4"/>
+            <Repeat className="size-4"/>
+          </div>
+          <div className="flex justify-center">
+          </div>
         </div>
         <div className="flex justify-center">
           botones extras (volumen)
