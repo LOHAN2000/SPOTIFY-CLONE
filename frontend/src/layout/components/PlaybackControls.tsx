@@ -1,8 +1,15 @@
 import { Slider } from "@/components/ui/slider";
 import { cn } from "@/lib/utils";
 import { usePlayerStore } from "@/stores/usePlayerStore"
-import { Play, Repeat, Shuffle, SkipBack, SkipForwardIcon } from "lucide-react";
+import { Play, Repeat, Shuffle, Sidebar, SkipBack, SkipForwardIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+
+
+const formatDuration = (seconds: number) => {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+  return `${minutes}:${remainingSeconds.toString().padStart(2, '0').split('.')[0]}`
+}
 
 export const PlaybackControls = () => {
 
@@ -53,22 +60,25 @@ export const PlaybackControls = () => {
             )}
           </div>
           <div className="flex flex-col justify-center">
-            <h1 className="text-md font-light">{currentSong?.title}</h1>
-            <h1 className="text-xs text-zinc-400">{currentSong?.artist}</h1>
+            <h1 className="text-xs sm:text-md lg:text-lg  font-light">{currentSong?.title}</h1>
+            <h1 className="text-[10px] sm:text-xs lg:text-md text-zinc-400">{currentSong?.artist}</h1>
           </div>
         </div>
-        <div className="flex flex-col items-center justify-center max-w-full gap-2">
-          <div className="flex flex-row gap-x-9 items-center">
-            <Shuffle className="size-4"/>
-            <SkipBack className="size-4"/>
-            <button className="bg-white p-2 rounded-full"><Play className="size-4 text-black"/></button>
-            <SkipForwardIcon className="size-4"/>
-            <Repeat className="size-4"/>
+        <div className="flex flex-col items-center justify-center max-w-full">
+          <div className="flex flex-row gap-x-4 sm:gap-x-9 items-center">
+            <Shuffle className="size-3 sm:size-4 cursor-pointer hover:text-zinc-400"/>
+            <SkipBack className="size-3 sm:size-5 cursor-pointer hover:text-zinc-400"/>
+            <button className="bg-white p-2 rounded-full cursor-pointer hover:bg-emerald-500 group transition-colors"><Play className="size-3 sm:size-5 text-black group-hover:text-white"/></button>
+            <SkipForwardIcon className="size-3 sm:size-5 cursor-pointer hover:text-zinc-400"/>
+            <Repeat className="size-3 sm:size-4 cursor-pointer hover:text-zinc-400"/>
           </div>
-          <div className="flex justify-center">
+          <div className="hidden sm:flex items-center w-full">
+          <div>{formatDuration(currentTime)}</div>
+          <Slider value={[currentTime]} max={duration || 100} step={1} onValueChange={handleSeek}/>
+          <div></div>
           </div>
         </div>
-        <div className="flex justify-center">
+        <div className="flex items-center justify-end">
           botones extras (volumen)
         </div>
       </div>
