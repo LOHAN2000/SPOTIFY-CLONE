@@ -4,17 +4,25 @@ import { useEffect } from 'react';
 import { FeaturedSection } from './components/FeaturedSection';
 import { MadeForYouSection } from './components/MadeForYouSection';
 import { TrendingSongs } from './components/TrendingSongs';
+import { usePlayerStore } from '@/stores/usePlayerStore';
 
 export const HomePage = () => {
 
-  const { fetchFeaturedSongs, fetchMadeForYouSongs, fetchTrendingSongs} = useMusicStore();
-
+  const { fetchFeaturedSongs, fetchMadeForYouSongs, fetchTrendingSongs, featuredSongs, madeForYouSongs, trendingSongs} = useMusicStore();
+  const { initializeQueue } = usePlayerStore();
   useEffect(() => {
     fetchFeaturedSongs();
     fetchMadeForYouSongs();
     fetchTrendingSongs();
   }, [ fetchFeaturedSongs, fetchMadeForYouSongs, fetchTrendingSongs]);
 
+  useEffect(() => {
+    if (featuredSongs.length > 0 && madeForYouSongs.length > 0 && trendingSongs.length > 0) {
+      const allSongs = [...featuredSongs, ...madeForYouSongs, ...trendingSongs]
+      initializeQueue(allSongs);
+    }
+  }, [initializeQueue, featuredSongs, madeForYouSongs, trendingSongs])
+  
 
   return (
     <main className='flex flex-col h-full bg-[rgb(18,18,18)]/30 rounded-lg overflow-hidden gap-y-3'>
