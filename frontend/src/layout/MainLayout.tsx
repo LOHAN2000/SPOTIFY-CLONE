@@ -30,7 +30,7 @@ export const MainLayout = () => {
 
         <ResizableHandle className='w-2 bg-black rounded-lg transition-colors'/>
 
-        <ResizablePanel defaultSize={isMobile ? 80 : 70}>
+        <ResizablePanel defaultSize={isMobile ? 80 : 75}>
           <Outlet/>
         </ResizablePanel>
 
@@ -38,7 +38,7 @@ export const MainLayout = () => {
           <>
             <ResizableHandle className='w-2 bg-black rounded-lg transition-colors'/>
 
-            <ResizablePanel defaultSize={15} minSize={9} maxSize={25} collapsedSize={8}>
+            <ResizablePanel defaultSize={10} minSize={9} maxSize={25} collapsedSize={8}>
               <FriendsActivity/>
             </ResizablePanel>
           </>

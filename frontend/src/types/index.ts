@@ -46,3 +46,10 @@ export interface User {
   updated_at: string,
   user_fullname: string
 }
+
+export interface Stats {
+  totalSongs: number;
+  totalAlbums: number;
+  totalUsers: number;
+  totalArtists: number;
+}
