@@ -2,6 +2,8 @@ import React from 'react'
 
 export const SongsTabContent = () => {
   return (
-    <div>SongsTabContent</div>
+    <div className='flex flex-col h-full bg-zinc-800'>
+      
+    </div>
   )
 }

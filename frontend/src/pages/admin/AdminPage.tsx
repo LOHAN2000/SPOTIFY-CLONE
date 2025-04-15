@@ -19,10 +19,10 @@ export const AdminPage = () => {
 
 
   return (
-    <div className='min-h-screen bg-[rgb(18,18,18)]/30 text-zinc-100 p-8'>
+    <div className='h-screen bg-[rgb(18,18,18)]/30 text-zinc-100 p-8'>
       <HeaderAdmin/>
       <DashboardStats/>
-      <Tabs defaultValue='songs' className='space-y-6'>
+      <Tabs defaultValue='songs' className='flex flex-col space-y-6'>
         <TabsList className='grid grid-cols-2 max-w-xs bg-zinc-800/50'>
           <TabsTrigger value='songs' className='flex items-center gap-x-2 data-[state=active]:bg-zinc-700/50'>
             <Music className='size-5'/>
@@ -33,10 +33,10 @@ export const AdminPage = () => {
             Album
           </TabsTrigger>
         </TabsList>
-        <TabsContent value='songs'>
+        <TabsContent value='songs' className='flex-1 min-h-0"'>
           <SongsTabContent/>
         </TabsContent>
-        <TabsContent value='albums'>
+        <TabsContent value='albums' className='flex-1 min-h-0"'>
           <AlbumsTabContent/>
         </TabsContent>
       </Tabs>
