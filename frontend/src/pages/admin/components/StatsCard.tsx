@@ -21,7 +21,7 @@ export const StatsCard: React.FC<StatsCardProps> = ({ type, total, color, iconCo
   const Icon = iconMap[type]
 
   return (
-    <div className='grid grid-cols-[1fr_3fr] lg:grid-cols-[1fr_3fr] 2xl:grid-cols-[1fr_5fr] w-full h-full bg-zinc-800 hover:bg-zinc-800/80 border-zinc-700/50 p-4 sm:py-6 rounded-lg gap-x-2 sm:gap-x-0 transition-colors'>
+    <div className='grid grid-cols-[1fr_3fr] lg:grid-cols-[1fr_3fr] 2xl:grid-cols-[1fr_5fr] w-full h-full bg-zinc-800 hover:bg-zinc-800/80 border-zinc-700/50 p-4 sm:py-7 rounded-lg gap-x-2 sm:gap-x-0 transition-colors'>
       <div className='flex justify-center items-center'>
         <Icon className={`flex ${color} ${iconColor} size-10 sm:size-14 p-2 rounded-md`}/>
       </div>

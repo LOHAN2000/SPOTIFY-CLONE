@@ -58,7 +58,7 @@ export const PlaybackControls = () => {
 
   return (
     <footer className="h-14 sm:h-18 bg-black px-4 rounded-lg mt-2">
-      <div className="grid grid-cols-3 items-center h-full max-w-[2200px] mx-auto overflow-hidden">
+      <div className="grid grid-cols-3 items-center h-full max-w-[2500px] mx-auto overflow-hidden">
         <div className="grid grid-cols-[1fr_8fr] gap-x-3 overflow-hidden h-full">
           <div className="flex h-10 w-10 sm:h-15 sm:w-15 mx-auto aspect-square my-auto">
             {currentSong?.image_Url && (

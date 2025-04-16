@@ -14,7 +14,7 @@ export const DashboardStats = () => {
   ]
 
   return (
-    <div className='grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-2 gap-x-4 my-4 mb-6'>
+    <div className='grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-2 gap-x-5 my-4 mb-6'>
       {statsArray.map((stat, index) => (
         <div key={index} className='flex justify-center'>
           <StatsCard type={stat.type} total={stat.total} color={stat.bgcolor} iconColor={stat.iconColor}/>
