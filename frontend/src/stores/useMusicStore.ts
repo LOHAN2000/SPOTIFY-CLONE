@@ -1,5 +1,6 @@
 import { axiosInstance } from '@/lib/axios';
 import { Album, Song, Stats } from '@/types';
+import { toast } from 'sonner';
 import { create } from 'zustand';
 
 interface MusicState {
@@ -20,6 +21,8 @@ interface MusicState {
   fetchTrendingSongs: () => void;
   fetchStats: () => Promise<void>;
   fetchSongs: () => Promise<void>;
+  deleteSong: (id: number) => Promise<void>;
+  deleteAlbum: (id: number) => Promise<void>;
 }
 
 
@@ -120,6 +123,40 @@ export const useMusicStore = create<MusicState>((set) => ({
       set({ stats: response.data })
     } catch (error: any) {
       set({error: error.response.data.message})
+    } finally {
+      set({ isLoading: false })
+    }
+  },
+
+  deleteSong: async (id) => {
+    set({ isLoading: true, error: null })
+    try {
+      await axiosInstance.delete(`/admin/songs/${id}`)
+      set(state => ({
+        ...state,
+        songs: state.songs.filter(song => song.song_id !== id)
+      }))
+      toast.success('Song deleted successfully')
+    } catch (error: any) {
+      set({ error: error.response.data.message })
+    } finally {
+      set({ isLoading:false})
+    }
+  },
+
+  deleteAlbum: async (id) => {
+    set({ isLoading: true, error: null})
+    try {
+      await axiosInstance.delete(`/admin/${id}`)
+      set(state => ({
+        albums: state.albums.filter(album => album.album_id !== id),
+        songs: state.songs.map(song =>
+        song.album_id === id ? { ...song, album: null } : song                   
+      )
+      }))
+      toast.success('Album deleted successfully')
+    } catch (error:any) {
+      set({ error: error.response.data.message })
     } finally {
       set({ isLoading: false })
     }
