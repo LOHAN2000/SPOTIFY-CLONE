@@ -12,9 +12,9 @@ export const TrendingSongs = () => {
       {trendingSongs.map((song) => {
         const isCurrentSong = currentSong?.song_id === song.song_id;
         return(
-          <div key={song.song_id} className="flex flex-col bg-zinc-800/10 hover:bg-zinc-800/50 rounded-md overflow-hidden max-w-100 justify-center gap-y-1 transition-colors pb-1 group">
-            <div className="w-full relative overflow-hidden">
-              <img src={song.image_Url} className="h-full w-full object-cover object-center duration-300 transition-transform group-hover:scale-110"/>
+          <div key={song.song_id} className="flex flex-col bg-zinc-800/10 hover:bg-zinc-800/50 overflow-hidden rounded-md max-w-150 justify-center gap-y-1 transition-colors pb-1 group">
+            <div className="size-full relative overflow-hidden">
+              <img src={song.image_Url} className="h-full w-full object-cover object-center aspect-square duration-300 transition-transform group-hover:scale-110"/>
               <div className={`absolute right-2 bottom-2 ${isCurrentSong ? 'block' : 'hidden'} group-hover:block transition-all`}>
                 <PlayButton song={song}/>
               </div>

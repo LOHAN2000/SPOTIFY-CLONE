@@ -9,7 +9,7 @@ import { useEffect } from 'react'
 
 export const AdminPage = () => {
 
-  const { fetchSongs, fetchStats, isLoading, fetchAlbums } = useMusicStore();
+  const { fetchSongs, fetchStats, fetchAlbums } = useMusicStore();
 
   useEffect(() => {
     fetchSongs();

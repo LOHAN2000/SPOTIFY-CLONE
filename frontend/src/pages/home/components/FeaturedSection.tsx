@@ -22,13 +22,13 @@ export const FeaturedSection = () => {
   };
 
   return (
-    <div className="grid grid-cols1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       {featuredSongs.map((song) => {
           const isCurrentSong = currentSong?.song_id === song.song_id;
         return(
-          <div key={song.song_id} className="flex flex-row items-center bg-zinc-800/30 rounded-md overflow-hidden hover:bg-zinc-700/50 transition-colors cursor-pointer relative gap-x-2 group">
-          <div className="w-2/10 max-w-25">
-            <img src={song.image_Url} className="w-full h-full object-contain"/>
+          <div key={song.song_id} className="grid grid-cols-[auto_2fr] items-center bg-zinc-800/30 rounded-md overflow-hidden hover:bg-zinc-700/50 transition-colors cursor-pointer relative gap-x-2 group">
+          <div className="size-15 sm:size-20">
+            <img src={song.image_Url} className="w-full h-full object-cover object-center"/>
           </div>
           <div className="flex flex-col justify-center overflow-hidden">
             <h1 className="font-medium truncate">{song.title}</h1>
