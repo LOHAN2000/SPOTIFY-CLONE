@@ -25,11 +25,11 @@ export const AdminPage = () => {
       <DashboardStats/>
       <Tabs defaultValue='songs' className='flex flex-col space-y-6 h-full overflow-hidden'>
         <TabsList className='grid grid-cols-2 max-w-xs bg-zinc-800/50'>
-          <TabsTrigger value='songs' className='flex items-center gap-x-2 data-[state=active]:bg-zinc-700/50'>
+          <TabsTrigger value='songs' className='flex items-center gap-x-2 data-[state=active]:bg-zinc-700/50 cursor-pointer'>
             <Music className='size-5'/>
             Songs
           </TabsTrigger>
-          <TabsTrigger value='albums' className='flex items-center gap-x-2 data-[state=active]:bg-zinc-700/50'>
+          <TabsTrigger value='albums' className='flex items-center gap-x-2 data-[state=active]:bg-zinc-700/50 cursor-pointer'>
             <Album className='size-5'/>
             Album
           </TabsTrigger>
@@ -37,7 +37,7 @@ export const AdminPage = () => {
         <TabsContent value='songs' className='h-full overflow-hidden'>
           <SongsTabContent/>
         </TabsContent>
-        <TabsContent value='albums' className=''>
+        <TabsContent value='albums' className='h-full overflow-hidden'>
           <AlbumsTabContent/>
         </TabsContent>
       </Tabs>

@@ -24,6 +24,7 @@ interface MusicState {
   deleteSong: (id: number) => Promise<void>;
   deleteAlbum: (id: number) => Promise<void>;
   postNewSong: (formData: FormData) => Promise<void>;
+  postNewAlbum: (formData: FormData) => Promise<void>;
 }
 
 
@@ -164,7 +165,7 @@ export const useMusicStore = create<MusicState>((set) => ({
   },
 
   postNewSong: async (formData) => {
-    set({ isLoading: true, error: null})
+    set({ isLoading: true, error: null })
     try {
       const response = await axiosInstance.post('/admin/songs', formData);
       set((state) => ({ songs: [response.data, ...state.songs], stats: {...state.stats, totalSongs: state.stats.totalSongs + 1}}))
@@ -175,6 +176,20 @@ export const useMusicStore = create<MusicState>((set) => ({
       set({ error: error.response?.data?.message || 'Error al agregar canción' });
     } finally {
       set({ isLoading: false})
+    }
+  },
+
+  postNewAlbum: async (formData) => {
+    set({ isLoading: true, error: null })
+    try {
+      const response = await axiosInstance.post('/admin/album', formData)
+      set((state) => ({ albums: [response.data, ...state.albums], stats: {...state.stats, totalAlbums: state.stats.totalAlbums + 1}}))
+
+      toast.success('Album created')
+    } catch (error: any) {
+      set({ error: error.response.data.message || 'Error al crear album'})
+    } finally {
+      set({ isLoading: false })
     }
   }
 }))
