@@ -53,3 +53,10 @@ export interface Stats {
   totalUsers: number;
   totalArtists: number;
 }
+
+export interface NewSong {
+  title: string,
+  artist: string,
+  album: string,
+  duration: string
+}

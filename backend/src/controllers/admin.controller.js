@@ -16,29 +16,28 @@ const uploadToCloudinary = async (file) => {
 export class AdminController {
   static async createSong (req, res, next) {
     try {
-          
-    if (!req.files || !req.files.audioFile || !req.files.imageFile) {
-        return res.status(400).json({ message: 'Please upload all files' });
-     }
-      const { title, artist, albumId, duration } = req.body;
-      const audioFile = req.files.audioFile;
-      const imageFile = req.files.imageFile
-
-      const audioUrl = await uploadToCloudinary(audioFile)
-      const imageUrl = await uploadToCloudinary(imageFile)
-
-      const [result] = await conn.query('INSERT IGNORE INTO song (title, artist, audio_Url, image_Url, duration, album_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)', [title, artist, audioUrl, imageUrl, duration, albumId || null])
-
-      if (result.affectedRows === 0) {
-        return res.status(409).json({message: 'Song duplicate'})
+      if (!req.files || !req.files.audioFile || !req.files.imageFile) {
+          return res.status(400).json({ message: 'Please upload all files' });
       }
+        const { title, artist, albumId, duration } = req.body;
+        const audioFile = req.files.audioFile;
+        const imageFile = req.files.imageFile
 
-      const insertedSongId = result.insertId;
-      const [songRows] = await conn.query('SELECT * FROM song WHERE song_id = ?', [insertedSongId])
+        const audioUrl = await uploadToCloudinary(audioFile)
+        const imageUrl = await uploadToCloudinary(imageFile)
 
-      const song = songRows[0];
+        const [result] = await conn.query('INSERT IGNORE INTO song (title, artist, audio_Url, image_Url, duration, album_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)', [title, artist, audioUrl, imageUrl, duration, albumId || null])
 
-      res.status(201).json(song)
+        if (result.affectedRows === 0) {
+          return res.status(409).json({message: 'Song duplicate'})
+        }
+
+        const insertedSongId = result.insertId;
+        const [songRows] = await conn.query('SELECT * FROM song WHERE song_id = ?', [insertedSongId])
+
+        const song = songRows[0];
+
+        res.status(201).json(song)
 
     } catch (error) {
       console.log('error in createSong function')

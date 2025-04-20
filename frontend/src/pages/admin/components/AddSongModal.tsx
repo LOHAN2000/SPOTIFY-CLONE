@@ -1,27 +1,72 @@
 import { useMusicStore } from '@/stores/useMusicStore'
-import { Upload, X } from 'lucide-react';
-import { useRef, useState } from 'react';
+import { NewSong } from '@/types';
+import { Loader2, Upload, X } from 'lucide-react';
+import React, { useRef, useState } from 'react';
+import { toast } from 'sonner';
 
 export const AddSongModal = () => {
 
-  const { albums } = useMusicStore();
+  const { albums, postNewSong } = useMusicStore();
 
-  const [ files, setFiles ] = useState<{ audio: File | null; image: string | null}>({
+  const [ newSong, setNewSong ] = useState<NewSong>({
+    title: '',
+    artist: '',
+    album: '',
+    duration: '0'
+  })
+
+  const [ files, setFiles ] = useState<{ audio: File | null; image: string | null | File}>({
     audio: null,
     image: null
   })
+
+  const [ isLoading, setIsLoading ] = useState<Boolean>(false)
+  const [ img, setImg ] = useState<string>('')
 
   const audioRef = useRef<HTMLInputElement>(null);
   const imageRef = useRef<HTMLInputElement>(null);
 
   const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
+    setFiles((prev) => ({ ...prev, image: e.target.files![0]}))
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.readAsDataURL(file);
-      reader.onload = () => setFiles((prev) => ({ ...prev, image: reader.result as string}))
+      reader.onload = () => setImg(reader.result as string)
     }
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+      if (!files.audio || !files.image) return toast.error('Please upload both audio and image files');
+
+      const formData = new FormData();
+
+      formData.append('title', newSong.title);
+      formData.append('artist', newSong.artist);
+      formData.append('duration', newSong.duration);
+      formData.append('albumId', newSong.album);
+      formData.append('audioFile', files.audio);
+      formData.append('imageFile', files.image);
+
+      await postNewSong(formData)
+      setIsLoading(false)
+      const modal = document.getElementById('modal_addSong') as HTMLDialogElement | null;
+      modal?.close();
+      
+      setNewSong({
+				title: "",
+				artist: "",
+				album: "",
+				duration: "0",
+			});
+
+			setFiles({
+				audio: null,
+				image: null,
+			});
   }
 
   return (
@@ -37,10 +82,10 @@ export const AddSongModal = () => {
         </header>
         {/* image handler */}
         <div className='flex flex-col h-full max-h-60 p-7 border border-dashed items-center justify-center space-y-0'>
-          {files.image ? (
+          {img ? (
             <div className='relative flex items-center w-full h-60 py-1'>
-              <img src={files.image} className=' object-contain h-full w-full rounded-md'/>
-              <X onClick={() => setFiles((prev) => ({ ...prev, image: null}))} className='absolute -right-6 top-2 z-100 cursor-pointer'/>
+              <img src={img} className=' object-contain h-full w-full rounded-md'/>
+              <X onClick={() => {setFiles((prev) => ({ ...prev, image: null})), setImg('')}} className='absolute -right-6 top-2 z-100 cursor-pointer'/>
             </div>
           ) : (
             <>
@@ -54,35 +99,32 @@ export const AddSongModal = () => {
         <div className='flex flex-col space-y-2 '>
           <h1 className='font-semibold'>Audio File</h1>
           <input type='file' accept='audio/*' hidden ref={audioRef} onChange={(e) => setFiles((prev) => ({ ...prev, audio: e.target.files![0]}))}/>
-          <button  onClick={() => audioRef.current?.click()} className='flex items-center justify-center bg-black/60 py-1.5 rounded-xs text-zinc-300 cursor-pointer'>{ 'Choose Audio File'}</button>
+          <button  onClick={() => audioRef.current?.click()} className='flex items-center justify-center bg-black/60 py-1.5 rounded-xs text-zinc-300 cursor-pointer'>{files.audio ? files.audio.name.slice(0, 100) : 'Choose Audio File'}</button>
         </div>
         {/* form input */}
-        <form className='flex flex-col'>
+        <form onSubmit={handleSubmit} id='formSong' className='flex flex-col'>
           <label className='font-semibold'>Song Title:</label>
-          <input type='text' className='bg-black/60 outline-none py-1.5 px-2 text-zinc-300 rounded-xs mt-1'/>
+          <input type='text' onChange={(e) => setNewSong({ ...newSong, [e.target.name]: e.target.value})} name='title' value={newSong.title} className='bg-black/60 outline-none py-1.5 px-2 text-zinc-300 rounded-xs mt-1'/>
           <label className='mt-3 font-semibold'>Artist:</label>
-          <input type='text' className='bg-black/60 outline-none py-1.5 px-2 text-zinc-300 rounded-xs mt-1'/>
+          <input type='text' onChange={(e) => setNewSong({ ...newSong, [e.target.name]: e.target.value})} name='artist' value={newSong.artist} className='bg-black/60 outline-none py-1.5 px-2 text-zinc-300 rounded-xs mt-1'/>
           <label className='mt-3 font-semibold'>Duration (seconds):</label>
-          <input type='text' className='bg-black/60 outline-none py-1.5 px-2 text-zinc-300 rounded-xs mt-1'/>
-          <label className='mt-3 font-semibold'>Album (optional)</label>
-          <select defaultValue="Select album" className="select bg-black/60 flex w-full outline-none select-secondary mt-1 px-2 py-1.5">
-            <option disabled={true}>Select album</option>
+          <input type='text' onChange={(e) => setNewSong({ ...newSong, [e.target.name]: e.target.value || '0'})} name='duration' value={newSong.duration} className='bg-black/60 outline-none py-1.5 px-2 text-zinc-300 rounded-xs mt-1'/>
+          <label className='mt-3 font-semibold'>Album (optional):</label>
+          <select onChange={(e) => setNewSong({ ...newSong, album: e.target.value})} defaultValue="Select album" className="select bg-black/60 flex w-full outline-none select-secondary mt-1 px-2 py-1.5">
+            <option disabled={false} >Select album</option>
             {albums.map((album) => (
-              <option  className='bg-black' key={album.album_id}>{album.title}</option>
+              <option  className='bg-black' key={album.album_id} value={album.album_id}>{album.title}</option>
             ))}
           </select>
         </form>
-        <div className='flex justify-end items-center mt-2'>
+        <div className='flex justify-end items-center mt-2 space-x-2'>
           <form method="dialog" className="">
-            <button className='py-1.5 px-5 rounded-md cursor-pointer hover:bg-zinc-800/50 text-sm'>Cancel</button>
+            <button className='py-1.5 px-5 rounded-md cursor-pointer hover:bg-zinc-800/50 text-sm text-zinc-400'>Cancel</button>
           </form>
-          <button className='py-1.5 px-5 rounded-md cursor-pointer hover:bg-emerald-400 bg-emerald-500 text-black font-semibold text-sm'>Add Song</button>
+          <button type='submit' form='formSong' disabled={!newSong.title || !newSong.artist || !newSong.duration} className='py-1.5 px-5 rounded-md cursor-pointer hover:bg-emerald-400 bg-emerald-500 text-black font-semibold text-sm disabled:cursor-default'>{isLoading ? <Loader2 className='animate-spin size-4.5'/> : 'Add Song'}</button>
         </div>
       </div>
     </div>        
-    <form method="dialog" className="modal-backdrop">
-      <button className=''>close</button>
-    </form>
   </dialog>
   )
 }

@@ -23,6 +23,7 @@ interface MusicState {
   fetchSongs: () => Promise<void>;
   deleteSong: (id: number) => Promise<void>;
   deleteAlbum: (id: number) => Promise<void>;
+  postNewSong: (formData: FormData) => Promise<void>;
 }
 
 
@@ -159,6 +160,21 @@ export const useMusicStore = create<MusicState>((set) => ({
       set({ error: error.response.data.message })
     } finally {
       set({ isLoading: false })
+    }
+  },
+
+  postNewSong: async (formData) => {
+    set({ isLoading: true, error: null})
+    try {
+      const response = await axiosInstance.post('/admin/songs', formData);
+      set((state) => ({ songs: [response.data, ...state.songs], stats: {...state.stats, totalSongs: state.stats.totalSongs + 1}}))
+
+      toast.success('Song created')
+
+    } catch (error: any) {
+      set({ error: error.response?.data?.message || 'Error al agregar canción' });
+    } finally {
+      set({ isLoading: false})
     }
   }
 }))
