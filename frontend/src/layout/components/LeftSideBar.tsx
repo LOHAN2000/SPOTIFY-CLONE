@@ -95,7 +95,7 @@ export const LeftSideBar = () => {
                       <button onClick={(e) => {e.preventDefault(), imgRef.current?.click()}} className='py-1.5 px-5 bg-green-600 rounded-md mt-2 cursor-pointer hover:bg-green-700'>Broser Files</button>
                     </>
                   ) : (
-                      <div className='flex flex-col h-full w-4/5  p-2'>
+                      <div className='flex flex-col h-full w-4/5 p-2'>
                         <img src={img} className='rounded-md object-contain w-full h-full'/>
                         <X  onClick={() => setImg('')} className='h-[19px] w-[19px] md:h-[24px] md:w-[24px] absolute top-4 right-4  hover:text-white hover:bg-zinc-500/30 rounded-full cursor-pointer'/>
                       </div>

@@ -27,8 +27,6 @@ export class AdminController {
       const audioUrl = await uploadToCloudinary(audioFile)
       const imageUrl = await uploadToCloudinary(imageFile)
 
-      console.log(audioUrl, imageUrl)
-
       const [result] = await conn.query('INSERT IGNORE INTO song (title, artist, audio_Url, image_Url, duration, album_id, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)', [title, artist, audioUrl, imageUrl, duration, albumId || null])
 
       if (result.affectedRows === 0) {
