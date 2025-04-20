@@ -60,8 +60,8 @@ export const Collection = () => {
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/1 opacity-90"></div>
         </div>
         <div className="relative flex flex-col h-full z-10 p-2 md:p-10 gap-y-0 sm:gap-y-3 bg-[rgb(18,18,18)]/30">
-          <div className="flex flex-col sm:grid sm:grid-cols-[1fr_8fr] gap-x-14 w-full sm:h-2/8">
-            <div className="flex sm:flex-1/10 w-50 sm:w-36 md:w-54 lg:w-40 max-w-3xl h-full min-w-8 mx-auto sm:mx-0 aspect-square">
+          <div className="flex flex-col sm:grid sm:grid-cols-[auto_8fr] gap-x-14 w-full sm:h-2/8 justify-center items-center">
+            <div className="flex size-44 sm:size-52 md:size-70 max-w-80 mx-auto sm:mx-0 aspect-square">
               <img className="object-center object-cover w-full h-full rounded-lg aspect-square" src={playlist?.image_url || '/spotify-black.jpg'} alt="Playlist Cover" />
             </div>
             <div className="flex sm:flex-3/4 flex-col gap-y-1 sm:gap-y-5 sm:max-w-5/7  max-h-25 sm:max-h-74 sm:justify-end">
@@ -123,8 +123,8 @@ export const Collection = () => {
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/1 opacity-90"></div>
           </div>
           <div className="relative flex flex-col h-full z-10 p-2 md:p-10 gap-y-0 sm:gap-y-3 bg-[rgb(18,18,18)]/30">
-            <div className="flex flex-col sm:grid sm:grid-cols-[1fr_8fr] gap-x-14 w-full sm:h-2/8">
-              <div className="flex sm:flex-1/10 w-50 sm:w-36 md:w-54 lg:w-40 max-w-3xl h-full min-w-8 mx-auto sm:mx-0 aspect-square">
+            <div className="flex flex-col sm:grid sm:grid-cols-[auto_8fr] gap-x-14 w-full sm:h-2/8 justify-center items-center">
+              <div className="flex size-44 sm:size-52 md:size-70 max-w-80 mx-auto sm:mx-0 aspect-square">
                 <img className="object-center object-cover w-full h-full rounded-lg aspect-square" src={album?.imageUrl || '/spotify-black.jpg'} alt="Playlist Cover" />
               </div>
               <div className="flex sm:flex-3/4 flex-col gap-y-1 sm:gap-y-5 sm:max-w-5/7  max-h-25 sm:max-h-74 sm:justify-end">
