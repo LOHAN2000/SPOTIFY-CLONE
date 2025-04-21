@@ -12,13 +12,18 @@ import albumRoutes from './routes/album.routes.js'
 import statsRoutes from './routes/stats.routes.js'
 import playlistRoutes from './routes/playlist.routes.js'
 import cors from 'cors'
+import { createServer } from 'http';
+import { initializeSocket } from './lib/socket.js';
 
 dotenv.config() 
 
 
 const app = express();
 const PORT = process.env.PORT_SERVER;
-const __dirname = path.resolve()
+const __dirname = path.resolve();
+
+const httpServer = createServer(app);
+initializeSocket(httpServer);
 
 app.use(cors({
   origin: 'http://localhost:3000',
@@ -60,6 +65,6 @@ app.get('/', (req, res) => {
   res.send('Server is already')
 })
 
-app.listen(PORT, () => {
+httpServer.listen(PORT, () => {
   console.log(`Server is running on port http://localhost:${PORT}`)
 })
