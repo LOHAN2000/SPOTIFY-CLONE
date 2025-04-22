@@ -33,7 +33,19 @@ export const initializeSocket = (server) => {
     socket.on('send_message', async (data) => {
       try {
         const { senderId, receiverId, content} = data;
-        // TODO guardar el mensaje en la db
+        
+        const [result] = await conn.query(
+          `INSERT INTO messages (sender_id, receiver_id, content) VALUES (?, ?, ?)`, [senderId, receiverId, content]
+        )
+
+        const newMessage = {
+          messageId: result.insertId,
+          senderId: senderId,
+          receiverId: receiverId,
+          content: content,
+          created_at
+        }
+
       } catch (error) {
         
       }
