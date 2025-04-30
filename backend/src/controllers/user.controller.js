@@ -12,4 +12,26 @@ export class UserController {
       next(error);
     }
   }
+
+  static async getMessages (req, res, next) {
+    try {
+      const myId = req.auth.userId;
+      const { userId } = req.params;
+
+      const sql = `
+      SELECT *
+      FROM messages
+      WHERE (sender_id = ? AND receiver_id = ?)
+         OR (sender_id = ? AND receiver_id = ?)
+      ORDER BY created_at ASC`;
+
+      const params = [ otherId, myId, myId, otherId ]
+      const [ rows ] = await conn.query(sql, params)
+
+      res.status(200).json(rows);
+
+    } catch (error) {
+      next(error);
+    }
+  }
 }

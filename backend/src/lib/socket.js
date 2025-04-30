@@ -73,8 +73,6 @@ export const initializeSocket = (server) => {
       if (disconectedUserId) {
         io.emit('user_disconnected', disconectedUserId);
       }
-
     })
   })
-
 }

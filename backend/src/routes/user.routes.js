@@ -8,5 +8,6 @@ dotenv.config()
 const router = express.Router()
 
 router.get('/', protectRoute, UserController.getAllUsers);
+router.get('/messages/:userId', protectRoute, UserController.getMessages);
 
 export default router;
