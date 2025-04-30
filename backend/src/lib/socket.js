@@ -46,11 +46,35 @@ export const initializeSocket = (server) => {
           created_at
         }
 
+        const receiverSocketId = userSockets.get(receiverId);
+        if (receiverId) {
+          io.to(receiverId).emit('receiver_message', message)
+        }
+
+        socket.emit('message_sent', message)
+
       } catch (error) {
-        
+        console.error('Message error socket: ', error);
+        socket.emit('message_error', error.message);
       }
     })
-  })
 
+    socket.on('disconect', () => {
+      let disconectedUserId;
+      for( const [ userId, socketId] of userSockets.entries()) {
+        if (socketId === socket.id) {
+          disconectedUserId = userId;
+          userSockets.delete(userId);
+          userActivities.delete(userId);
+          break;
+        }
+      }
+
+      if (disconectedUserId) {
+        io.emit('user_disconnected', disconectedUserId);
+      }
+
+    })
+  })
 
 }
