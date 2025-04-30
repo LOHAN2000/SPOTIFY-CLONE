@@ -41,6 +41,7 @@ export interface NewPlaylist {
 
 export interface User {
   clerkId: string,
+  fullName: string,
   created_ad: string,
   image_Url: string,
   updated_at: string,

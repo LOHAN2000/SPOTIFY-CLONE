@@ -1,5 +1,6 @@
 import { axiosInstance } from "@/lib/axios";
 import { useAuthStore } from "@/stores/useAuthStore";
+import { useChatStore } from "@/stores/useChatStore";
 import { useAuth } from "@clerk/clerk-react";
 import { Loader } from "lucide-react";
 import React, { useEffect, useState } from "react";
@@ -13,9 +14,10 @@ const updateApiToken = async (token: string | null) => {
 };
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const { getToken } = useAuth();
+  const { getToken, userId } = useAuth();
   const [loading, setLoading] = useState<boolean>(true);
   const { checkAdminStatus } = useAuthStore();
+  const { initSocket, disconnetSocket } = useChatStore();
 
   // Configura el token inicialmente al montar el componente
   useEffect(() => {
@@ -25,6 +27,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         updateApiToken(token);
         if (token) {
           await checkAdminStatus();
+          if (userId) initSocket(userId);
         }
       } catch (error: any) {
         updateApiToken(null);
@@ -35,7 +38,9 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     initAuth();
-  }, [getToken]);
+
+    return () => disconnetSocket();
+  }, [getToken, userId, checkAdminStatus, updateApiToken, disconnetSocket]);
 
   // Configura un interceptor para refrescar el token antes de cada petición
   useEffect(() => {
