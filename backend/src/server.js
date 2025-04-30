@@ -1,6 +1,8 @@
 import path from 'path'
 import express from 'express';
 import { clerkMiddleware } from '@clerk/express'
+import { createServer } from 'http';
+import cors from 'cors'
 import fileUpload from 'express-fileupload'
 import dotenv from 'dotenv'
 
@@ -11,8 +13,6 @@ import songsRoutes from './routes/song.routes.js'
 import albumRoutes from './routes/album.routes.js'
 import statsRoutes from './routes/stats.routes.js'
 import playlistRoutes from './routes/playlist.routes.js'
-import cors from 'cors'
-import { createServer } from 'http';
 import { initializeSocket } from './lib/socket.js';
 
 dotenv.config() 
