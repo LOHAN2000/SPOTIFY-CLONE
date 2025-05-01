@@ -48,6 +48,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       async (config) => {
         const token = await getToken();
         if (token) {
+          //@ts-ignore
           config.headers = {
             ...config.headers,
             Authorization: `Bearer ${token}`,
