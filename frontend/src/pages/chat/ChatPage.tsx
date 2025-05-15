@@ -20,10 +20,10 @@ export const ChatPage = () => {
 
   return (
     <main className='h-full flex flex-col rounded-lg bg-[rgb(18,18,18)]/30 overflow-hidden'>
-  <TopBar/>
-  <div className='h-full grid grid-cols-[2fr_5fr] overflow-hidden'>
-    <UserList/>
-  </div>
-</main>
+      <TopBar/>
+      <div className='h-full grid grid-cols-[2fr_5fr] overflow-hidden'>
+        <UserList/>
+      </div>
+    </main>
   )
 }

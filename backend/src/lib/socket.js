@@ -18,17 +18,16 @@ export const initializeSocket = (server) => {
       userSockets.set(userId, socket.id);
       userActivities.set(userId, 'Idle');
 
-      io.emit('user_connected', userId);
-
-      socket.emit('users_online', Array.from(userSockets.keys()));
-
+      // 1) Emitimos a TODOS la lista completa
+      io.emit('users_online', Array.from(userSockets.keys()));
       io.emit('activities', Array.from(userActivities.entries()));
-    })
+      io.emit('user_connected', userId);
+    });
 
-    socket.on('update_activity', ({userId, activity}) => {
-      userActivities.set(userId, activity)
-      io.emit('activity_updated', {userId, activity})
-    })
+    socket.on('update_activity', ({ userId, activity }) => {
+      userActivities.set(userId, activity);
+      io.emit('activity_updated', { userId, activity });
+    });
 
     socket.on('send_message', async (data) => {
       try {
@@ -59,20 +58,18 @@ export const initializeSocket = (server) => {
       }
     })
 
-    socket.on('disconect', () => {
-      let disconectedUserId;
-      for( const [ userId, socketId] of userSockets.entries()) {
-        if (socketId === socket.id) {
-          disconectedUserId = userId;
-          userSockets.delete(userId);
-          userActivities.delete(userId);
+    socket.on('disconnect', () => {
+      // buscamos al usuario que se ha desconectado
+      for (const [uid, sid] of userSockets.entries()) {
+        if (sid === socket.id) {
+          userSockets.delete(uid);
+          userActivities.delete(uid);
+          // 2) Broadcast de la lista actualizada
+          io.emit('users_online', Array.from(userSockets.keys()));
+          io.emit('user_disconnected', uid);
           break;
         }
       }
-
-      if (disconectedUserId) {
-        io.emit('user_disconnected', disconectedUserId);
-      }
-    })
+    });
   })
 }
