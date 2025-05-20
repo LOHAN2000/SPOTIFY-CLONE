@@ -31,26 +31,29 @@ export const initializeSocket = (server) => {
 
     socket.on('send_message', async (data) => {
       try {
-        const { senderId, receiverId, content} = data;
+        const { senderId, receiverId, content } = data;
+        const now = new Date();
         
         const [result] = await conn.query(
           `INSERT INTO messages (sender_id, receiver_id, content) VALUES (?, ?, ?)`, [senderId, receiverId, content]
         )
+
+        console.log(result)
 
         const newMessage = {
           messageId: result.insertId,
           senderId: senderId,
           receiverId: receiverId,
           content: content,
-          created_at
+          created_at: now
         }
 
         const receiverSocketId = userSockets.get(receiverId);
         if (receiverId) {
-          io.to(receiverId).emit('receiver_message', message)
+          io.to(receiverId).emit('receiver_message', newMessage)
         }
 
-        socket.emit('message_sent', message)
+        socket.emit('message_sent', newMessage)
 
       } catch (error) {
         console.error('Message error socket: ', error);

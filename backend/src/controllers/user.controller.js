@@ -25,7 +25,7 @@ export class UserController {
          OR (sender_id = ? AND receiver_id = ?)
       ORDER BY created_at ASC`;
 
-      const params = [ otherId, myId, myId, otherId ]
+      const params = [ userId, myId, myId, userId ]
       const [ rows ] = await conn.query(sql, params)
 
       res.status(200).json(rows);

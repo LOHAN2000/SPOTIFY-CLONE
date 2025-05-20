@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 
 interface PlaylistProps {
   playlist: Playlist
-
 }
 
 export const PlaylistItem = ({ playlist }: PlaylistProps) => {
