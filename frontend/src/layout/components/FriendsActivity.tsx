@@ -6,10 +6,12 @@ import { useEffect } from 'react'
 
 export const FriendsActivity = () => {
 
-  const { users, fetchUsers } = useChatStore();
+  const { users, fetchUsers, userActivities } = useChatStore();
   const { user } = useUser();
   
   const { currentSong } = usePlayerStore();
+
+  console.log(userActivities)
 
   useEffect(() => {
     if (!user) return;
