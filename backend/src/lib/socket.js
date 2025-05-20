@@ -38,19 +38,17 @@ export const initializeSocket = (server) => {
           `INSERT INTO messages (sender_id, receiver_id, content) VALUES (?, ?, ?)`, [senderId, receiverId, content]
         )
 
-        console.log(result)
-
         const newMessage = {
-          messageId: result.insertId,
-          senderId: senderId,
-          receiverId: receiverId,
-          content: content,
+          message_id: result.insertId,
+          sender_id: senderId,
+          receiver_id: receiverId,
+          content,
           created_at: now
         }
 
         const receiverSocketId = userSockets.get(receiverId);
         if (receiverId) {
-          io.to(receiverId).emit('receiver_message', newMessage)
+          io.to(receiverSocketId).emit('receive_message', newMessage)
         }
 
         socket.emit('message_sent', newMessage)

@@ -63,6 +63,8 @@ export const useChatStore = create<ChatStore>((set, get) => ({
       socket.connect();
       socket.emit('user_connected', userId)
 
+      set({ socket, isConnected: true });
+
       socket.on('users_online', (users: string[]) => {
         set({ onlineUsers: new Set(users)})
       })
@@ -76,6 +78,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
       })
 
       socket.on('receive_message', (message: Message) => {
+        console.log('hola')
         set((state) => ({ messages: [ ...state.messages, message ] }))
       })
 
@@ -103,13 +106,11 @@ export const useChatStore = create<ChatStore>((set, get) => ({
   sendMessage: (receiverId, senderId, content) => {
     const socket = get().socket;
     if (!socket) return;
-    console.log('hola')
     socket.emit('send_message', { receiverId, senderId, content });
   },
 
   fetchMessages: async (userId) => {
     set({ isLoading: true, error: null});
-    console.log('hola')
     try {
       const response = await axiosInstance.get(`/users/messages/${userId}`)
       set({ messages: response.data })

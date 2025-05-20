@@ -69,10 +69,10 @@ export interface NewAlbum {
 }
 
 export interface Message {
-  _id: string,
-  senderId: string;
-  receiverId: string;
+  message_id: string,
+  sender_id: string;
+  receiver_id: string;
   content: string;
-  createdAt: string;
-  updatedAt: string;
+  created_at: string;
+  updated_at: string;
 }

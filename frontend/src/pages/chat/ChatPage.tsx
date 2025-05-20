@@ -24,9 +24,9 @@ export const ChatPage = () => {
   return (
     <main className='h-full flex flex-col rounded-lg bg-[rgb(18,18,18)]/30 overflow-hidden'>
       <TopBar/>
-      <div className='h-full grid grid-cols-[2fr_5fr] overflow-hidden'>
+      <div className='h-full grid grid-cols-[1fr_4fr] sm:grid-cols-[2fr_5fr] overflow-hidden'>
         <UserList/>
-        <div className='flex flex-col h-full'>
+        <div className='flex flex-col h-full overflow-hidden'>
           {selectedUser ? (
             <>
               <ChatHeader/>
