@@ -13,13 +13,16 @@ export const LeftSideBar = () => {
     name: '',
     description: '',
   })
+  
+  const { playlists, fetchPlaylists, postPlaylist, isLoadingFetch, isLoadingPost } = usePlaylistStore()
+
+  console.log(playlists)
 
   const [img, setImg] = useState<string>('')
   const imgRef = useRef<HTMLInputElement>(null)
   const { user } = useUser();
   const userId = user?.id
 
-  const { playlists, fetchPlaylists, postPlaylist, isLoadingFetch, isLoadingPost } = usePlaylistStore()
 
   useEffect(() => {
     if (!userId) return;

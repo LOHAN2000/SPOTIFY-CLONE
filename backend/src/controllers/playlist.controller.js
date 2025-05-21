@@ -73,7 +73,7 @@ export class PlaylistController {
     try {
       const { id } = req.params;
 
-      const [playlist] = await conn.query('SELECT * FROM playlist WHERE clerkId = ?', [id]);
+      const [playlist] = await conn.query('SELECT * FROM playlist WHERE clerkId = ? ORDER BY created_at DESC', [id]);
 
       res.status(200).json(playlist)
     } catch (error) {
@@ -99,6 +99,7 @@ export class PlaylistController {
         FROM song AS s
         JOIN playlist_songs AS ps ON ps.song_id = s.song_id
         WHERE ps.playlist_id = ?
+        
       `, [id]);
   
       res.status(200).json({ ...playlist[0], songs });
