@@ -7,6 +7,7 @@ import { ChatPage } from './pages/chat/ChatPage';
 import { Collection } from './pages/collection/Collection';
 import { AdminPage } from './pages/admin/AdminPage';
 import { useAuthStore } from './stores/useAuthStore';
+import { NotFoundPage } from './pages/404/NotFoundPage';
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
           <Route path='/chat' element={<ChatPage/>}/>
           <Route path='/album/:id' element={<Collection/>}/>
           <Route path='/playlist/:id' element={<Collection/>}/>
+          <Route path='/*' element={<NotFoundPage/>}/>
         </Route>
       </Routes>
     </>
