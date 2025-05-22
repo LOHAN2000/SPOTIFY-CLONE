@@ -1,7 +1,7 @@
 import { useMusicStore } from "@/stores/useMusicStore";
 import { usePlayerStore } from "@/stores/usePlayerStore";
 import { usePlaylistStore } from "@/stores/usePlaylistStore";
-import { Clock, Music, Pause, Play } from "lucide-react";
+import { Clock, Loader, Music, Pause, Play, Trash } from "lucide-react";
 import { useEffect } from "react";
 import { useLocation, useParams } from "react-router-dom"
 
@@ -16,7 +16,7 @@ export const Collection = () => {
   const { pathname } = useLocation();
   const { id } = useParams();
 
-  const { fetchPlaylistById, playlist } = usePlaylistStore();
+  const { fetchPlaylistById, playlist, deletePlayslistSong, isLoadingPlaylist } = usePlaylistStore();
   const { fetchAlbumById, album} = useMusicStore();
 
   const { currentSong, isPlaying, playCollection, togglePlay } = usePlayerStore();
@@ -106,7 +106,7 @@ export const Collection = () => {
                     </div>
                   </div>
                   <div className="text-sm md:text-lg py-3 ps-3"><h1>{song.created_at.split('T')[0]}</h1></div>
-                  <div className="text-sm md:text-lg py-3 ps-4"><h1>{formatDuration(song.duration)}</h1></div>
+                  <div className="flex text-sm md:text-lg py-3 ps-4 space-x-2 items-center"><h1>{formatDuration(song.duration)}</h1>{isLoadingPlaylist ? <Loader className="size-4 animate-spin"/> : <Trash onClick={() => deletePlayslistSong(song.song_id, playlist.playlist_id)} className="size-4 hover:text-white"/>}</div>
                 </div>
               )
             })}

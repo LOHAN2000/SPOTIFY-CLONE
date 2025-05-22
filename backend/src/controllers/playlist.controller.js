@@ -37,20 +37,38 @@ export class PlaylistController {
 
   static async addSongToPlaylist (req, res, next) {
     try {
-      const { songId, playlistId } = req.body;
+    const { songId, playlistId } = req.body;
 
-      const [result] = await conn.query('INSERT INTO playlist_songs (playlist_id, song_id, added_at) VALUES(?, ?, CURRENT_TIMESTAMP)', [playlistId, songId]);
-
-      if (result.affectedRows === 0) {
-        return res.status(404).json('Error adding song to playlist')
-      }
-
-      res.status(201).json({message: 'Song added to playlist succesfully'});
-    } catch (error) {
-      console.log('Error in addSongToPlaylist', error);
-      next(error);
+    const [result] = await conn.query(
+      'INSERT INTO playlist_songs (playlist_id, song_id, added_at) VALUES(?, ?, CURRENT_TIMESTAMP)',
+      [playlistId, songId]
+    );
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Error adding song to playlist' });
     }
-  }
+
+    const [[playlistRow]] = await conn.query(`
+      SELECT * FROM playlist WHERE playlist_id = ?
+    `, [playlistId]);
+    const [songsRows] = await conn.query(`
+      SELECT s.* 
+        FROM song AS s
+        JOIN playlist_songs AS ps ON ps.song_id = s.song_id
+       WHERE ps.playlist_id = ?
+    `, [playlistId]);
+
+    return res.status(201).json({
+      message: 'Song added successfully',
+      playlist: {
+        ...playlistRow,
+        songs: songsRows
+      }
+    });
+
+  } catch (error) {
+    console.log('Error in addSongToPlaylist', error);
+    next(error);
+  }}
 
   static async deleteSongFromPlaylist (req, res, next) {
     try {

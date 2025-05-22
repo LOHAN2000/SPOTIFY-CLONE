@@ -1,5 +1,6 @@
 import { axiosInstance } from "@/lib/axios";
 import { Playlist } from "@/types";
+import { toast } from "sonner";
 import { create } from "zustand";
 
 interface PlaylistState {
@@ -13,7 +14,9 @@ interface PlaylistState {
   
   fetchPlaylists: (id: string) => Promise<void>,
   postPlaylist: (name: string, description: string, image_url: string) => Promise<void>,
-  fetchPlaylistById: (id: number | string) => Promise<void>
+  fetchPlaylistById: (id: number | string) => Promise<void>,
+  addSongToPlaylist: (songId: number | string, playlistId: number | string) => Promise<void>,
+  deletePlayslistSong: (songId: number, playlistId: number) => Promise<void>
 
 }
 
@@ -66,5 +69,49 @@ export const usePlaylistStore = create<PlaylistState>((set) => ({
     } finally {
       set({isLoadingPlaylist: false})
     }
-  } 
+  },
+
+  addSongToPlaylist: async (songId, playlistId) => {
+  set({ isLoadingPlaylist: true, error: null });
+  try {
+    const { data } = await axiosInstance.post('playlist/song', { songId, playlistId });
+    const updated = data.playlist as Playlist;
+
+    set((state) => {
+      const playlists = state.playlists.map(pl =>
+        pl.playlist_id === updated.playlist_id ? updated : pl
+      );
+      const playlist =
+        state.playlist?.playlist_id === updated.playlist_id
+          ? updated
+          : state.playlist;
+
+      return { playlists, playlist };
+    });
+
+    toast.success(data.message);
+  } catch (error: any) {
+    set({ error: error.message });
+    toast.error('Error al añadir la canción');
+  } finally {
+    set({ isLoadingPlaylist: false });
+  }
+},
+
+deletePlayslistSong: async (songId, playlistId) => {
+  set({ isLoadingPlaylist: true, error: null})
+  try {
+    await axiosInstance.delete(`playlist/playlistId/${playlistId}/songId/${songId}`)
+    set((state) => ({
+      playlist: state.playlist?.playlist_id === playlistId ? { ...state.playlist, songs: state.playlist.songs.filter(s => s.song_id !== songId) } : state.playlist
+    }))
+
+    toast.success('Song deleted')
+  } catch (error: any) {
+    set({ error: error.message });
+    toast.error('Error deleting song');
+  } finally {
+    set({ isLoadingPlaylist: false, error: null})
+  }
+}
 }))
