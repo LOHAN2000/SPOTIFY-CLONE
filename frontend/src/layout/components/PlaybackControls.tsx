@@ -16,8 +16,6 @@ export const PlaybackControls = () => {
   const { currentSong, isPlaying, togglePlay, playNext, playPrevious } = usePlayerStore();
   const { playlists, addSongToPlaylist } = usePlaylistStore();
 
-  console.log(playlists)
-
   const [volume, setVolume] = useState(40);
   const [muted, setMuted] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
@@ -103,7 +101,7 @@ export const PlaybackControls = () => {
             <ul className="dropdown dropdown-top dropdown-end menu h-70 rounded-box bg-[rgb(18,18,18)] shadow-sm space-y-1"popover="auto" id="popover-1" style={{ positionAnchor: "--anchor-1" } as React.CSSProperties }>
                 <li className="sticky -top-2.5 bg-[rgb(18,18,18)] z-50 py-1 text-lg">Playlists:</li>
                 {playlists.map((pl) => (
-                <li onClick={() => addSongToPlaylist(currentSong!.song_id, pl.playlist_id)} className="text-md hover:bg-zinc-700 cursor-pointer py-1 font-semibold px-1">{pl.name}</li>
+                <li key={pl.playlist_id} onClick={() => addSongToPlaylist(currentSong!.song_id, pl.playlist_id)} className="text-md hover:bg-zinc-700 cursor-pointer py-1 font-semibold px-1">{pl.name}</li>
                 ))}
             </ul>
             <Laptop2 className="mx-auto size-3 sm:size-5"/>

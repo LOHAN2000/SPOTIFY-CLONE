@@ -90,7 +90,7 @@ export const Collection = () => {
               <Play size={27} color="black"/>
             )}
           </button> 
-          <Trash onClick={() => {const modal = document.getElementById('modal_delete_playlist') as HTMLDialogElement | null; modal?.showModal(); console.log('hola')}} className="absolute right-5 top-5 z-20 hover:text-emerald-500 cursor-pointer"/>
+          <Trash onClick={() => {const modal = document.getElementById('modal_delete_playlist') as HTMLDialogElement | null; modal?.showModal();}} className="absolute right-5 top-5 z-20 hover:text-emerald-500 cursor-pointer"/>
           </div>
           <div className="flex flex-col mt-5 sm:mt-10  justify-center text-zinc-400 border-b border-white-/5 px-2">
             <div className="grid grid-cols-[15px_6fr_2fr_1fr] sm:grid-cols-[30px_5fr_2fr_1fr] text-sm md:text-xl">

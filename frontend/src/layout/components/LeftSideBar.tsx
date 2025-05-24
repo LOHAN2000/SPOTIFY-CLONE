@@ -16,8 +16,6 @@ export const LeftSideBar = () => {
   
   const { playlists, fetchPlaylists, postPlaylist, isLoadingFetch, isLoadingPost } = usePlaylistStore()
 
-  console.log(playlists)
-
   const [img, setImg] = useState<string>('')
   const imgRef = useRef<HTMLInputElement>(null)
   const { user } = useUser();
