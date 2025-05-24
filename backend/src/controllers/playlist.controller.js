@@ -126,4 +126,24 @@ export class PlaylistController {
       next(error);
     }
   }
+
+  static async deletePlaylist (req, res, next) {
+    try {
+      const { playlistId } = req.params;
+
+      const [ result ] = await conn.query(
+        `DELETE FROM playlist WHERE playlist_id = ?`, [playlistId]
+      )
+
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ message: 'Playlist not found'})
+      }
+
+      return res.status(200).json({ message: 'Playlist deleted successfully'})
+
+    } catch (error) {
+      console.log('Error in deletePlaylist', error)
+      next(error);
+    }
+  }
 }

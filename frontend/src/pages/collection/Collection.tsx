@@ -3,7 +3,7 @@ import { usePlayerStore } from "@/stores/usePlayerStore";
 import { usePlaylistStore } from "@/stores/usePlaylistStore";
 import { Clock, Loader, Music, Pause, Play, Trash } from "lucide-react";
 import { useEffect } from "react";
-import { useLocation, useParams } from "react-router-dom"
+import { useLocation, useNavigate, useParams } from "react-router-dom"
 
 const formatDuration = (seconds: number) => {
   const minutes = Math.floor(seconds / 60);
@@ -15,8 +15,9 @@ export const Collection = () => {
 
   const { pathname } = useLocation();
   const { id } = useParams();
+  const navigate = useNavigate();
 
-  const { fetchPlaylistById, playlist, deletePlayslistSong, isLoadingPlaylist } = usePlaylistStore();
+  const { fetchPlaylistById, playlist, deletePlayslistSong, isLoadingPlaylist, deletePlaylist } = usePlaylistStore();
   const { fetchAlbumById, album} = useMusicStore();
 
   const { currentSong, isPlaying, playCollection, togglePlay } = usePlayerStore();
@@ -42,6 +43,14 @@ export const Collection = () => {
       if (!songs) return;
       playCollection(songs, 0)
     }
+  }
+
+  const handleDeletePlaylist = (playlistId: number) => {
+    if (!playlist?.playlist_id) return;
+
+    deletePlaylist(playlistId);
+    navigate('/');
+
   }
 
   useEffect(() => {
@@ -81,7 +90,7 @@ export const Collection = () => {
               <Play size={27} color="black"/>
             )}
           </button> 
-          <Trash className="absolute right-5 top-5 z-20 hover:text-emerald-500 cursor-pointer"/>
+          <Trash onClick={() => {const modal = document.getElementById('modal_delete_playlist') as HTMLDialogElement | null; modal?.showModal(); console.log('hola')}} className="absolute right-5 top-5 z-20 hover:text-emerald-500 cursor-pointer"/>
           </div>
           <div className="flex flex-col mt-5 sm:mt-10  justify-center text-zinc-400 border-b border-white-/5 px-2">
             <div className="grid grid-cols-[15px_6fr_2fr_1fr] sm:grid-cols-[30px_5fr_2fr_1fr] text-sm md:text-xl">
@@ -116,6 +125,16 @@ export const Collection = () => {
         <div>
         </div>
       </div>
+      {/* MODAL DELETE */}
+      <dialog id="modal_delete_playlist" className='modal cursor-default'>
+        <div className='modal-box p-4 px-15 flex flex-col items-center rounded-xl max-w-md md:max-w-fit'>
+          <h1 className="uppercase text-zinc-100 font-semibold text-2xl mb-5">Delete Playlist <span className="text-emerald-500">{playlist?.name}</span></h1>
+          <button onClick={() => handleDeletePlaylist(playlist!.playlist_id)} className="text-xl font-extralight bg-emerald-500 text-black px-10 py-1.5 rounded-lg mb-2 hover:bg-red-500 hover:text-white transition-colors cursor-pointer">DELETE</button>
+          <form method="dialog" className="">
+            <button className='text-xl font-extralight bg-inherit text-white px-10 py-1.5 rounded-lg border border-zinc-700 hover:bg-white hover:text-black transition-colors cursor-pointer'>CLOSE</button>
+          </form>
+        </div>
+      </dialog>
     </div>
     ) : (
       <div className="h-full">

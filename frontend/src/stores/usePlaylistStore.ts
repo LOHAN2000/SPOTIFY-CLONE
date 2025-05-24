@@ -17,6 +17,7 @@ interface PlaylistState {
   fetchPlaylistById: (id: number | string) => Promise<void>,
   addSongToPlaylist: (songId: number | string, playlistId: number | string) => Promise<void>,
   deletePlayslistSong: (songId: number, playlistId: number) => Promise<void>
+  deletePlaylist: (playlistId: number) => Promise<void>;
 
 }
 
@@ -98,20 +99,39 @@ export const usePlaylistStore = create<PlaylistState>((set) => ({
   }
 },
 
-deletePlayslistSong: async (songId, playlistId) => {
-  set({ isLoadingPlaylist: true, error: null})
-  try {
-    await axiosInstance.delete(`playlist/playlistId/${playlistId}/songId/${songId}`)
-    set((state) => ({
-      playlist: state.playlist?.playlist_id === playlistId ? { ...state.playlist, songs: state.playlist.songs.filter(s => s.song_id !== songId) } : state.playlist
-    }))
+  deletePlayslistSong: async (songId, playlistId) => {
+    set({ isLoadingPlaylist: true, error: null})
+    try {
+      await axiosInstance.delete(`playlist/playlistId/${playlistId}/songId/${songId}`)
+      set((state) => ({
+        playlist: state.playlist?.playlist_id === playlistId ? { ...state.playlist, songs: state.playlist.songs.filter(s => s.song_id !== songId) } : state.playlist
+      }))
 
-    toast.success('Song deleted')
-  } catch (error: any) {
-    set({ error: error.message });
-    toast.error('Error deleting song');
-  } finally {
-    set({ isLoadingPlaylist: false, error: null})
+      toast.success('Song deleted')
+    } catch (error: any) {
+      set({ error: error.message });
+      toast.error('Error deleting song');
+    } finally {
+      set({ isLoadingPlaylist: false, error: null})
+    }
+  },
+
+  deletePlaylist: async (playlistId) => {
+    try {
+      set({ isLoadingPlaylist: true, error: null})
+
+      const response = await axiosInstance.delete(`/playlist/${playlistId}`)
+      set((state) => ({
+        playlists: state.playlists.filter(p => p.playlist_id !== playlistId),
+        playlist: state.playlist?.playlist_id === playlistId ? null : state.playlist
+      }))
+
+      toast(response.data.message)
+    } catch (error: any) {
+       set({ error:error.message })
+    } finally {
+      set({ isLoadingPlaylist: false, error: null })
+    }
   }
-}
+
 }))
