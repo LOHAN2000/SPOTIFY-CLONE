@@ -1,4 +1,3 @@
-import React from 'react'
 
 export const PlaylistSkeletons = () => {
   return Array.from({ length: 7 }).map((_, i) => (

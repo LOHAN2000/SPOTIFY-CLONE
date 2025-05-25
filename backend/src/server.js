@@ -4,6 +4,8 @@ import { clerkMiddleware } from '@clerk/express'
 import { createServer } from 'http';
 import cors from 'cors'
 import fileUpload from 'express-fileupload'
+import cron from 'node-cron'
+import fs from 'fs'
 import dotenv from 'dotenv'
 
 import userRoutes from './routes/user.routes.js'
@@ -42,6 +44,24 @@ app.use(fileUpload({
   abortOnLimit: true // Devuelve error si se excede el límite
 }));
 
+const tempDir = path.join(process.cwd(), 'tmp')
+
+cron.schedule('0 * * * *', () => {
+  if (fs.existsSync(tempDir)) {
+    fs.readdir(tempDir, (err, files) => {
+      if (err) {
+        console.log('error', err);
+        return;
+      }
+      for (const file of files) {
+        fs.unlink(path.join(tempDir, file), (err) = {})
+      }
+    })
+  }
+})
+
+
+
 app.use(clerkMiddleware()); 
 
 app.use('/api/users', userRoutes);
@@ -51,6 +71,13 @@ app.use('/api/songs', songsRoutes);
 app.use('/api/album', albumRoutes);
 app.use('/api/stats', statsRoutes);
 app.use('/api/playlist', playlistRoutes)
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../../frontend/dist')))
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../../frontend/dist/index.html'))
+  })
+}
 
 app.use((err, req, res, next) => {
   res.status(500).json({ message: process.env.NODE_ENV === 'production' ? 'Internal server error' : err.message})

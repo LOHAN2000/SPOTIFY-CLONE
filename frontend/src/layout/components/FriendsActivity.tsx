@@ -1,5 +1,4 @@
 import { useChatStore } from '@/stores/useChatStore'
-import { usePlayerStore } from '@/stores/usePlayerStore';
 import { useUser } from '@clerk/clerk-react';
 import { Headphones, Music, Users } from 'lucide-react';
 import { useEffect } from 'react'
@@ -9,8 +8,6 @@ export const FriendsActivity = () => {
   const { users, fetchUsers, userActivities, onlineUsers } = useChatStore();
   const { user } = useUser();
   
-  const { currentSong } = usePlayerStore();
-
   useEffect(() => {
     if (!user) return;
     fetchUsers()

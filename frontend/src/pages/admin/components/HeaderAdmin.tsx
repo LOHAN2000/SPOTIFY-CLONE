@@ -1,10 +1,8 @@
-import { useAuthStore } from '@/stores/useAuthStore'
 import { UserButton } from '@clerk/clerk-react';
 import { Link } from 'react-router-dom'
 
 export const HeaderAdmin = () => {
 
-  const { isAdmin } = useAuthStore();
 
   return (
     <div className='flex flex-row sticky top-0  backdrop-blur-md z-10 w-full justify-between items-center py-3 px-4'>
