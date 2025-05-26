@@ -72,12 +72,14 @@ app.use('/api/album', albumRoutes);
 app.use('/api/stats', statsRoutes);
 app.use('/api/playlist', playlistRoutes)
 
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../../frontend/dist')))
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, '../../frontend/dist/index.html'))
-  })
+if (process.env.NODE_ENV === "production") {
+  console.log('hola')
+	app.use(express.static(path.join(__dirname, "../frontend/dist")));
+	app.get("*", (req, res) => {
+		res.sendFile(path.resolve(__dirname, "../frontend", "dist", "index.html"));
+	});
 }
+
 
 app.use((err, req, res, next) => {
   res.status(500).json({ message: process.env.NODE_ENV === 'production' ? 'Internal server error' : err.message})
