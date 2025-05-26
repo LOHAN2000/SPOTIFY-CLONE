@@ -5,8 +5,8 @@ export class StatController {
     try {
       const [[songRows], [albumRows], [userRows], [artistRows]] = await Promise.all([
         conn.query('SELECT COUNT(*) AS totalSongs FROM song'),
-        conn.query('SELECT COUNT (*) AS totalAlbums FROM album'),
-        conn.query('SELECT COUNT (*) AS totalUsers FROM users'),
+        conn.query('SELECT COUNT(*) AS totalAlbums FROM album'),
+        conn.query('SELECT COUNT(*) AS totalUsers FROM users'),
         conn.query(
           'SELECT COUNT(*) AS totalArtists FROM (SELECT artist FROM song UNION SELECT artist FROM album) AS unionArtists')
       ]);
